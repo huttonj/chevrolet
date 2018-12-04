@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.CarExtMapper">
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.CarDO">
+        <id column="car_id" jdbcType="BIGINT" property="carId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+        <result column="car_unique" jdbcType="VARCHAR" property="carUnique" />
+        <result column="emission" jdbcType="VARCHAR" property="emission" />
+        <result column="img_behind" jdbcType="VARCHAR" property="imgBehind" />
+        <result column="img_damage" jdbcType="VARCHAR" property="imgDamage" />
+        <result column="img_front" jdbcType="VARCHAR" property="imgFront" />
+        <result column="img_interior" jdbcType="VARCHAR" property="imgInterior" />
+        <result column="img_mileage" jdbcType="VARCHAR" property="imgMileage" />
+        <result column="img_nameplate" jdbcType="VARCHAR" property="imgNameplate" />
+        <result column="inner_color_id" jdbcType="BIGINT" property="innerColorId" />
+        <result column="inner_color_name" jdbcType="VARCHAR" property="innerColorName" />
+        <result column="model_id" jdbcType="BIGINT" property="modelId" />
+        <result column="model_name" jdbcType="VARCHAR" property="modelName" />
+        <result column="odometer" jdbcType="VARCHAR" property="odometer" />
+        <result column="outer_color_id" jdbcType="BIGINT" property="outerColorId" />
+        <result column="outer_color_name" jdbcType="VARCHAR" property="outerColorName" />
+        <result column="production_date" jdbcType="VARCHAR" property="productionDate" />
+        <result column="series_id" jdbcType="BIGINT" property="seriesId" />
+        <result column="series_name" jdbcType="VARCHAR" property="seriesName" />
+        <result column="spec_id" jdbcType="INTEGER" property="specId" />
+        <result column="spec_name" jdbcType="VARCHAR" property="specName" />
+        <result column="car_desc" jdbcType="VARCHAR" property="carDesc" />
+        <result column="guide_price" jdbcType="VARCHAR" property="guidePrice" />
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+        <result column="car_source" jdbcType="INTEGER" property="carSource" />
+        <result column="asset_right" jdbcType="BIGINT" property="assetRight" />
+        <result column="asset_right_name" jdbcType="VARCHAR" property="assetRightName" />
+        <result column="asset_right_type" jdbcType="INTEGER" property="assetRightType" />
+        <result column="asset_right_in_change" jdbcType="INTEGER" property="assetRightInChange" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        car_id,gmt_create,gmt_modified,brand_id,brand_name,car_unique,emission,img_behind,img_damage,img_front,img_interior,img_mileage,img_nameplate,inner_color_id,inner_color_name,model_id,model_name,odometer,outer_color_id,outer_color_name,production_date,series_id,series_name,spec_id,spec_name,car_desc,guide_price,is_deleted,car_source,asset_right,asset_right_name,asset_right_type,asset_right_in_change
+    </sql>
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="carId">
+        INSERT INTO cc_car
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="list[0].brandId != null">
+                brand_id,
+            </if>
+            <if test="list[0].brandName != null">
+                brand_name,
+            </if>
+            <if test="list[0].carUnique != null">
+                car_unique,
+            </if>
+            <if test="list[0].emission != null">
+                emission,
+            </if>
+            <if test="list[0].imgBehind != null">
+                img_behind,
+            </if>
+            <if test="list[0].imgDamage != null">
+                img_damage,
+            </if>
+            <if test="list[0].imgFront != null">
+                img_front,
+            </if>
+            <if test="list[0].imgInterior != null">
+                img_interior,
+            </if>
+            <if test="list[0].imgMileage != null">
+                img_mileage,
+            </if>
+            <if test="list[0].imgNameplate != null">
+                img_nameplate,
+            </if>
+            <if test="list[0].innerColorId != null">
+                inner_color_id,
+            </if>
+            <if test="list[0].innerColorName != null">
+                inner_color_name,
+            </if>
+            <if test="list[0].modelId != null">
+                model_id,
+            </if>
+            <if test="list[0].modelName != null">
+                model_name,
+            </if>
+            <if test="list[0].odometer != null">
+                odometer,
+            </if>
+            <if test="list[0].outerColorId != null">
+                outer_color_id,
+            </if>
+            <if test="list[0].outerColorName != null">
+                outer_color_name,
+            </if>
+            <if test="list[0].productionDate != null">
+                production_date,
+            </if>
+            <if test="list[0].seriesId != null">
+                series_id,
+            </if>
+            <if test="list[0].seriesName != null">
+                series_name,
+            </if>
+            <if test="list[0].specId != null">
+                spec_id,
+            </if>
+            <if test="list[0].specName != null">
+                spec_name,
+            </if>
+            <if test="list[0].carDesc != null">
+                car_desc,
+            </if>
+            <if test="list[0].guidePrice != null">
+                guide_price,
+            </if>
+            <if test="list[0].isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="list[0].carSource != null">
+                car_source,
+            </if>
+            <if test="list[0].assetRight != null">
+                asset_right,
+            </if>
+            <if test="list[0].assetRightName != null">
+                asset_right_name,
+            </if>
+            <if test="list[0].assetRightType != null">
+                asset_right_type,
+            </if>
+        </trim>
+        values
+        <foreach collection="list" item="carDO" index="index" separator="," >
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                now(),now(),
+                <if test="carDO.brandId != null">
+                    #{carDO.brandId,jdbcType=BIGINT},
+                </if>
+                <if test="carDO.brandName != null">
+                    #{carDO.brandName,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.carUnique != null">
+                    #{carDO.carUnique,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.emission != null">
+                    #{carDO.emission,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.imgBehind != null">
+                    #{carDO.imgBehind,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.imgDamage != null">
+                    #{carDO.imgDamage,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.imgFront != null">
+                    #{carDO.imgFront,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.imgInterior != null">
+                    #{carDO.imgInterior,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.imgMileage != null">
+                    #{carDO.imgMileage,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.imgNameplate != null">
+                    #{carDO.imgNameplate,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.innerColorId != null">
+                    #{carDO.innerColorId,jdbcType=BIGINT},
+                </if>
+                <if test="carDO.innerColorName != null">
+                    #{carDO.innerColorName,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.modelId != null">
+                    #{carDO.modelId,jdbcType=BIGINT},
+                </if>
+                <if test="carDO.modelName != null">
+                    #{carDO.modelName,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.odometer != null">
+                    #{carDO.odometer,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.outerColorId != null">
+                    #{carDO.outerColorId,jdbcType=BIGINT},
+                </if>
+                <if test="carDO.outerColorName != null">
+                    #{carDO.outerColorName,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.productionDate != null">
+                    #{carDO.productionDate,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.seriesId != null">
+                    #{carDO.seriesId,jdbcType=BIGINT},
+                </if>
+                <if test="carDO.seriesName != null">
+                    #{carDO.seriesName,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.specId != null">
+                    #{carDO.specId,jdbcType=INTEGER},
+                </if>
+                <if test="carDO.specName != null">
+                    #{carDO.specName,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.carDesc != null">
+                    #{carDO.carDesc,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.guidePrice != null">
+                    #{carDO.guidePrice,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.isDeleted != null">
+                    #{carDO.isDeleted,jdbcType=INTEGER},
+                </if>
+                <if test="carDO.carSource != null">
+                    #{carDO.carSource,jdbcType=INTEGER},
+                </if>
+                <if test="carDO.assetRight != null">
+                    #{carDO.assetRight,jdbcType=BIGINT},
+                </if>
+                <if test="carDO.assetRightName != null">
+                    #{carDO.assetRightName,jdbcType=VARCHAR},
+                </if>
+                <if test="carDO.assetRightType != null">
+                    #{carDO.assetRightType,jdbcType=INTEGER},
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="batchUpdateByCarIds" >
+        update cc_car
+        <set>
+            gmt_modified=now(),
+            <if test="carDO.brandId != null">
+                brand_id = #{carDO.brandId,jdbcType=BIGINT},
+            </if>
+            <if test="carDO.brandName != null">
+                brand_name = #{carDO.brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.carUnique != null">
+                car_unique = #{carDO.carUnique,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.emission != null">
+                emission = #{carDO.emission,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.imgBehind != null">
+                img_behind = #{carDO.imgBehind,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.imgDamage != null">
+                img_damage = #{carDO.imgDamage,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.imgFront != null">
+                img_front = #{carDO.imgFront,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.imgInterior != null">
+                img_interior = #{carDO.imgInterior,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.imgMileage != null">
+                img_mileage = #{carDO.imgMileage,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.imgNameplate != null">
+                img_nameplate = #{carDO.imgNameplate,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.innerColorId != null">
+                inner_color_id = #{carDO.innerColorId,jdbcType=BIGINT},
+            </if>
+            <if test="carDO.innerColorName != null">
+                inner_color_name = #{carDO.innerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.modelId != null">
+                model_id = #{carDO.modelId,jdbcType=BIGINT},
+            </if>
+            <if test="carDO.modelName != null">
+                model_name = #{carDO.modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.odometer != null">
+                odometer = #{carDO.odometer,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.outerColorId != null">
+                outer_color_id = #{carDO.outerColorId,jdbcType=BIGINT},
+            </if>
+            <if test="carDO.outerColorName != null">
+                outer_color_name = #{carDO.outerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.productionDate != null">
+                production_date = #{carDO.productionDate,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.seriesId != null">
+                series_id = #{carDO.seriesId,jdbcType=BIGINT},
+            </if>
+            <if test="carDO.seriesName != null">
+                series_name = #{carDO.seriesName,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.specId != null">
+                spec_id = #{carDO.specId,jdbcType=INTEGER},
+            </if>
+            <if test="carDO.specName != null">
+                spec_name = #{carDO.specName,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.carDesc != null">
+                car_desc = #{carDO.carDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.guidePrice != null">
+                guide_price = #{carDO.guidePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.isDeleted != null">
+                is_deleted = #{carDO.isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="carDO.carSource != null">
+                car_source = #{carDO.carSource,jdbcType=INTEGER},
+            </if>
+            <if test="carDO.assetRightInChange != null">
+                asset_right_in_change = #{carDO.assetRightInChange,jdbcType=INTEGER},
+            </if>
+        </set>
+        <where>
+            car_id in
+            <foreach collection="carIds" item="carId"  open="(" separator="," close=")">
+                #{carId,jdbcType=BIGINT}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="updateAssetRightByCarIds" >
+      update cc_car
+      <set>
+        gmt_modified=now(),
+        <if test="carDO.assetRight != null">
+            asset_right = #{carDO.assetRight,jdbcType=BIGINT},
+        </if>
+        <if test="carDO.assetRightName != null">
+            asset_right_name = #{carDO.assetRightName,jdbcType=VARCHAR},
+        </if>
+        <if test="carDO.assetRightType != null">
+            asset_right_type = #{carDO.assetRightType,jdbcType=INTEGER},
+        </if>
+        <if test="carDO.assetRightInChange != null">
+            asset_right_in_change = #{carDO.assetRightInChange,jdbcType=INTEGER},
+        </if>
+      </set>
+      <where>
+          car_id in
+          <foreach collection="carIds" item="carId"  open="(" separator="," close=")">
+              #{carId,jdbcType=BIGINT}
+          </foreach>
+        and asset_right = #{oldAssetRight,jdbcType=BIGINT}
+        and asset_right_type = #{oldAssetRightType,jdbcType=INTEGER}
+      </where>
+    </update>
+
+    <update id="updateAssetRightByCarIdsTemp" >
+        update cc_car
+        <set>
+            gmt_modified=now(),
+            <if test="carDO.assetRight != null">
+                asset_right = #{carDO.assetRight,jdbcType=BIGINT},
+            </if>
+            <if test="carDO.assetRightName != null">
+                asset_right_name = #{carDO.assetRightName,jdbcType=VARCHAR},
+            </if>
+            <if test="carDO.assetRightType != null">
+                asset_right_type = #{carDO.assetRightType,jdbcType=INTEGER},
+            </if>
+            <if test="carDO.assetRightInChange != null">
+                asset_right_in_change = #{carDO.assetRightInChange,jdbcType=INTEGER},
+            </if>
+        </set>
+        <where>
+            car_id in
+            <foreach collection="carIds" item="carId"  open="(" separator="," close=")">
+                #{carId,jdbcType=BIGINT}
+            </foreach>
+        </where>
+    </update>
+</mapper>

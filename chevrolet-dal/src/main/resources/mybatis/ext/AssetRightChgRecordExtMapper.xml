@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.AssetRightChgRecordExtMapper">
+
+    <update id="updateByPrimaryKeySelectiveWithStatus" >
+        update cc_asset_right_chg_record
+        <set>
+            gmt_modified=now(),
+            <if test="assetRightChgRecord.contractId != null">
+                contract_id = #{assetRightChgRecord.contractId,jdbcType=BIGINT},
+            </if>
+            <if test="assetRightChgRecord.recordStatus != null">
+                record_status = #{assetRightChgRecord.recordStatus,jdbcType=INTEGER},
+            </if>
+            <if test="assetRightChgRecord.signTime != null">
+                sign_time = #{assetRightChgRecord.signTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="assetRightChgRecord.confirmTime != null">
+                confirm_time = #{assetRightChgRecord.confirmTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <where>
+            asset_right_chg_record_id = #{assetRightChgRecord.assetRightChgRecordId,jdbcType=BIGINT}
+            and record_status in
+            <foreach collection="recordStatus" item="temp"  open="(" separator="," close=")">
+                #{temp,jdbcType=INTEGER}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="discardByChgRecordIds" >
+        update cc_asset_right_chg_record
+        set record_status = 5, gmt_modified=now()
+        <where>
+            asset_right_chg_record_id in
+            <foreach collection="recordIds" item="recordId"  open="(" separator="," close=")">
+                #{recordId,jdbcType=BIGINT}
+            </foreach>
+            and record_status in (1,2)
+        </where>
+    </update>
+
+</mapper>

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.TmsCarMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.TmsCarDO">
+        <id column="car_id" jdbcType="BIGINT" property="carId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="car_unique" jdbcType="VARCHAR" property="carUnique" />
+        <result column="model_id" jdbcType="BIGINT" property="modelId" />
+        <result column="model_name" jdbcType="VARCHAR" property="modelName" />
+        <result column="inner_id" jdbcType="BIGINT" property="innerId" />
+        <result column="outer_id" jdbcType="BIGINT" property="outerId" />
+        <result column="outer_color_name" jdbcType="VARCHAR" property="outerColorName" />
+        <result column="inner_color_name" jdbcType="VARCHAR" property="innerColorName" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+        <result column="series_id" jdbcType="BIGINT" property="seriesId" />
+        <result column="series_name" jdbcType="VARCHAR" property="seriesName" />
+        <result column="spec_id" jdbcType="INTEGER" property="specId" />
+        <result column="spec_name" jdbcType="VARCHAR" property="specName" />
+        <result column="guide_price" jdbcType="VARCHAR" property="guidePrice" />
+        <result column="market_price" jdbcType="VARCHAR" property="marketPrice" />
+        <result column="emission" jdbcType="VARCHAR" property="emission" />
+        <result column="attach" jdbcType="TINYINT" property="attach" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        car_id,gmt_create,gmt_modified,car_unique,model_id,model_name,inner_id,outer_id,outer_color_name,inner_color_name,brand_id,brand_name,series_id,series_name,spec_id,spec_name,guide_price,market_price,emission,attach,status
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.TmsCarQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from tms_car
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from tms_car where car_id = #{carId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tms_car where car_id = #{carId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.TmsCarDO">
+        <selectKey keyProperty="carId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into tms_car
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="carUnique != null">
+                car_unique,
+            </if>
+            <if test="modelId != null">
+                model_id,
+            </if>
+            <if test="modelName != null">
+                model_name,
+            </if>
+            <if test="innerId != null">
+                inner_id,
+            </if>
+            <if test="outerId != null">
+                outer_id,
+            </if>
+            <if test="outerColorName != null">
+                outer_color_name,
+            </if>
+            <if test="innerColorName != null">
+                inner_color_name,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="brandName != null">
+                brand_name,
+            </if>
+            <if test="seriesId != null">
+                series_id,
+            </if>
+            <if test="seriesName != null">
+                series_name,
+            </if>
+            <if test="specId != null">
+                spec_id,
+            </if>
+            <if test="specName != null">
+                spec_name,
+            </if>
+            <if test="guidePrice != null">
+                guide_price,
+            </if>
+            <if test="marketPrice != null">
+                market_price,
+            </if>
+            <if test="emission != null">
+                emission,
+            </if>
+            <if test="attach != null">
+                attach,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="carUnique != null">
+                #{carUnique,jdbcType=VARCHAR},
+            </if>
+            <if test="modelId != null">
+                #{modelId,jdbcType=BIGINT},
+            </if>
+            <if test="modelName != null">
+                #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="innerId != null">
+                #{innerId,jdbcType=BIGINT},
+            </if>
+            <if test="outerId != null">
+                #{outerId,jdbcType=BIGINT},
+            </if>
+            <if test="outerColorName != null">
+                #{outerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="innerColorName != null">
+                #{innerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="brandName != null">
+                #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="seriesId != null">
+                #{seriesId,jdbcType=BIGINT},
+            </if>
+            <if test="seriesName != null">
+                #{seriesName,jdbcType=VARCHAR},
+            </if>
+            <if test="specId != null">
+                #{specId,jdbcType=INTEGER},
+            </if>
+            <if test="specName != null">
+                #{specName,jdbcType=VARCHAR},
+            </if>
+            <if test="guidePrice != null">
+                #{guidePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="marketPrice != null">
+                #{marketPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="emission != null">
+                #{emission,jdbcType=VARCHAR},
+            </if>
+            <if test="attach != null">
+                #{attach,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.TmsCarQuery" resultType="java.lang.Integer">
+        select count(*) from tms_car
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.TmsCarDO">
+        update tms_car
+        <set>
+            gmt_modified=now(),
+            <if test="carUnique != null">
+                car_unique = #{carUnique,jdbcType=VARCHAR},
+            </if>
+            <if test="modelId != null">
+                model_id = #{modelId,jdbcType=BIGINT},
+            </if>
+            <if test="modelName != null">
+                model_name = #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="innerId != null">
+                inner_id = #{innerId,jdbcType=BIGINT},
+            </if>
+            <if test="outerId != null">
+                outer_id = #{outerId,jdbcType=BIGINT},
+            </if>
+            <if test="outerColorName != null">
+                outer_color_name = #{outerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="innerColorName != null">
+                inner_color_name = #{innerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="brandName != null">
+                brand_name = #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="seriesId != null">
+                series_id = #{seriesId,jdbcType=BIGINT},
+            </if>
+            <if test="seriesName != null">
+                series_name = #{seriesName,jdbcType=VARCHAR},
+            </if>
+            <if test="specId != null">
+                spec_id = #{specId,jdbcType=INTEGER},
+            </if>
+            <if test="specName != null">
+                spec_name = #{specName,jdbcType=VARCHAR},
+            </if>
+            <if test="guidePrice != null">
+                guide_price = #{guidePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="marketPrice != null">
+                market_price = #{marketPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="emission != null">
+                emission = #{emission,jdbcType=VARCHAR},
+            </if>
+            <if test="attach != null">
+                attach = #{attach,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where car_id = #{carId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

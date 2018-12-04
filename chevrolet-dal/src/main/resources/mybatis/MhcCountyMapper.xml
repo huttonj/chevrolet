@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.MhcCountyMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.MhcCountyDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="county_id" jdbcType="BIGINT" property="countyId" />
+        <result column="county_name" jdbcType="VARCHAR" property="countyName" />
+        <result column="county_short_name" jdbcType="VARCHAR" property="countyShortName" />
+        <result column="county_sort" jdbcType="INTEGER" property="countySort" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="county_index" jdbcType="VARCHAR" property="countyIndex" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id,gmt_create,gmt_modified,county_id,county_name,county_short_name,county_sort,province_id,city_id,county_index,status
+    </sql>
+<!--替换为下面的代码-->
+    <!--<select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.MhcCountyQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from b2b_mhc_county
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>-->
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.MhcCountyQuery" resultMap="BaseResultMap">
+        select
+        id,gmt_create,gmt_modified,county_id,county_name,(select city_name FROM b2b_mhc_city where city_id =a.city_id) as county_short_name,county_sort,province_id,city_id,county_index,status
+        from b2b_mhc_county a
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from b2b_mhc_county where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from b2b_mhc_county where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.MhcCountyDO">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into b2b_mhc_county
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="countyId != null">
+                county_id,
+            </if>
+            <if test="countyName != null">
+                county_name,
+            </if>
+            <if test="countyShortName != null">
+                county_short_name,
+            </if>
+            <if test="countySort != null">
+                county_sort,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="countyIndex != null">
+                county_index,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="countyId != null">
+                #{countyId,jdbcType=BIGINT},
+            </if>
+            <if test="countyName != null">
+                #{countyName,jdbcType=VARCHAR},
+            </if>
+            <if test="countyShortName != null">
+                #{countyShortName,jdbcType=VARCHAR},
+            </if>
+            <if test="countySort != null">
+                #{countySort,jdbcType=INTEGER},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="countyIndex != null">
+                #{countyIndex,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.MhcCountyQuery" resultType="java.lang.Integer">
+        select count(*) from b2b_mhc_county
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.MhcCountyDO">
+        update b2b_mhc_county
+        <set>
+            gmt_modified=now(),
+            <if test="countyId != null">
+                county_id = #{countyId,jdbcType=BIGINT},
+            </if>
+            <if test="countyName != null">
+                county_name = #{countyName,jdbcType=VARCHAR},
+            </if>
+            <if test="countyShortName != null">
+                county_short_name = #{countyShortName,jdbcType=VARCHAR},
+            </if>
+            <if test="countySort != null">
+                county_sort = #{countySort,jdbcType=INTEGER},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="countyIndex != null">
+                county_index = #{countyIndex,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

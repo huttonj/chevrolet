@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.WmsWarehouseAreaPositionMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.WmsWarehouseAreaPositionDO">
+        <id column="area_position_id" jdbcType="BIGINT" property="areaPositionId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+        <result column="area_id" jdbcType="INTEGER" property="areaId" />
+        <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+        <result column="row_id" jdbcType="INTEGER" property="rowId" />
+        <result column="row_name" jdbcType="VARCHAR" property="rowName" />
+        <result column="location_id" jdbcType="INTEGER" property="locationId" />
+        <result column="location_name" jdbcType="VARCHAR" property="locationName" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="occupied" jdbcType="TINYINT" property="occupied" />
+        <result column="graphic_x" jdbcType="INTEGER" property="graphicX" />
+        <result column="graphic_y" jdbcType="INTEGER" property="graphicY" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        area_position_id,gmt_create,gmt_modified,warehouse_id,area_id,area_name,row_id,row_name,location_id,location_name,status,occupied,graphic_x,graphic_y
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsWarehouseAreaPositionQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from wms_warehouse_area_position
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from wms_warehouse_area_position where area_position_id = #{areaPositionId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from wms_warehouse_area_position where area_position_id = #{areaPositionId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.WmsWarehouseAreaPositionDO">
+        <selectKey keyProperty="areaPositionId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into wms_warehouse_area_position
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="areaName != null">
+                area_name,
+            </if>
+            <if test="rowId != null">
+                row_id,
+            </if>
+            <if test="rowName != null">
+                row_name,
+            </if>
+            <if test="locationId != null">
+                location_id,
+            </if>
+            <if test="locationName != null">
+                location_name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="occupied != null">
+                occupied,
+            </if>
+            <if test="graphicX != null">
+                graphic_x,
+            </if>
+            <if test="graphicY != null">
+                graphic_y,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="areaName != null">
+                #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="rowId != null">
+                #{rowId,jdbcType=INTEGER},
+            </if>
+            <if test="rowName != null">
+                #{rowName,jdbcType=VARCHAR},
+            </if>
+            <if test="locationId != null">
+                #{locationId,jdbcType=INTEGER},
+            </if>
+            <if test="locationName != null">
+                #{locationName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="occupied != null">
+                #{occupied,jdbcType=TINYINT},
+            </if>
+            <if test="graphicX != null">
+                #{graphicX,jdbcType=INTEGER},
+            </if>
+            <if test="graphicY != null">
+                #{graphicY,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsWarehouseAreaPositionQuery" resultType="java.lang.Integer">
+        select count(*) from wms_warehouse_area_position
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.WmsWarehouseAreaPositionDO">
+        update wms_warehouse_area_position
+        <set>
+            gmt_modified=now(),
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="areaName != null">
+                area_name = #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="rowId != null">
+                row_id = #{rowId,jdbcType=INTEGER},
+            </if>
+            <if test="rowName != null">
+                row_name = #{rowName,jdbcType=VARCHAR},
+            </if>
+            <if test="locationId != null">
+                location_id = #{locationId,jdbcType=INTEGER},
+            </if>
+            <if test="locationName != null">
+                location_name = #{locationName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="occupied != null">
+                occupied = #{occupied,jdbcType=TINYINT},
+            </if>
+            <if test="graphicX != null">
+                graphic_x = #{graphicX,jdbcType=INTEGER},
+            </if>
+            <if test="graphicY != null">
+                graphic_y = #{graphicY,jdbcType=INTEGER},
+            </if>
+        </set>
+        where area_position_id = #{areaPositionId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

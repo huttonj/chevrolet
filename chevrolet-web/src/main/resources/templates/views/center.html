@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="zh-CN" dir="ltr"
+      th:attr="data-page=(${primaryPage} and ${secondaryPage} ? (${primaryPage} + '-' + ${secondaryPage}) : '')">
+<head th:with="timestamp=${#dates.format(#dates.createNow(),'yyyyMMddHH')}, muuBase='//img.maihaoche.com/muu/1.0.20'">
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1,user-scalable=no,minimal-ui"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="grey"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <meta name="x5-orientation" content="portrait"/>
+    <meta name="format-detection" content="telephone=no,email=no"/>
+    <meta name="wap-font-scale" content="no"/>
+    <title th:text="${pageTitle} + ' - 车辆中心'"></title>
+    <link rel="icon" th:href="${muuBase} + @{/muu/images/favicon.png}"/>
+    <link rel="stylesheet" th:href="${muuBase} + @{/select2/dist/css/select2.css}"/>
+    <link rel="stylesheet" th:href="${muuBase} + @{/muu/stylesheets/admin.css}"/>
+    <link rel="stylesheet" th:href="${muuBase} + @{/bootstrap-table/dist/bootstrap-table.min.css}"/>
+    <!--<link rel="stylesheet" th:href="@{/admin/assets/reset.css(t=${timestamp})}" />-->
+    <!--[if lt IE 9]>
+    <script th:src="${muuBase} + @{/html5shiv/dist/html5shiv.js}"></script>
+    <script th:src="${muuBase} + @{/es5-shim/es5-shim.js}"></script>
+    <script th:src="${muuBase} + @{/es5-shim/es5-sham.js}"></script>
+    <![endif]-->
+    <script th:src="${muuBase} + @{/jquery/dist/jquery.min.js}"></script>
+    <script th:src="@{/admin/vendors/modjs/mod.js(t=${timestamp})}"></script>
+    <script th:src="${muuBase} + @{/bootstrap-sass/assets/javascripts/bootstrap.min.js}"></script>
+    <script th:src="${muuBase} + @{/bootstrap-table/dist/bootstrap-table.min.js}"></script>
+    <script th:src="${muuBase} + @{/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <script th:src="${muuBase} + @{/select2/dist/js/select2.full.js}"></script>
+    <script th:src="${muuBase} + @{/select2/dist/js/i18n/zh-CN.js}"></script>
+    <script th:src="${muuBase} + @{/h5fx/H5Fx.js}"></script>
+    <script th:src="${muuBase} + @{/muu/javascripts/utils.js}"></script>
+    <script th:src="${muuBase} + @{/muu/javascripts/admin.js}"></script>
+    <!--<script th:src="@{/admin/assets/global.js(t=${timestamp})}"></script>-->
+    <script th:src="@{/views/util.js(t=${timestamp})}"></script>
+</head>
+<body class="Page" th:with="timestamp=${#dates.format(#dates.createNow(),'yyyyMMddHH')}, muuBase='//img.maihaoche.com/muu/1.0.20'">
+    <header class="Page-header Header">
+        <div class="Header-brand">
+            <a href="/"><img th:src="${muuBase} + @{/muu/images/logo.png}"
+                             th:attr="srcset=(${muuBase} + @{/muu/images/logo-2x.png} + ' 2x')"
+                             alt="卖好车"/><span>车辆中心</span></a>
+        </div>
+        <div class="Header-extra">
+            <div class="Header-operations">
+                <th:block layout:fragment="headerActions">
+                </th:block>
+                <th:block th:if="${staff != null}">
+                    <div class="Header-action Action Action--avatar"><a class="Action-trigger"
+                                                                        href="javascript:void(0);"><span
+                            th:text="${staff.nickname}"></span></a>
+                        <div class="Action-content Card">
+                            <div class="Card-content">
+                                <ul th:object="${staff}">
+                                    <li th:if="*{mobile}" th:text="*{mobile}"></li>
+                                    <li th:if="*{email}" th:text="*{email}"></li>
+                                </ul>
+                            </div>
+                            <div class="Card-footer">
+                                <a th:href="@{/logout.htm}" class="btn btn-default btn-xs">退出</a>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </header>
+    <main class="Page-body">
+        <div class="Page-sidebar Sidebar">
+            <nav class="Sidebar-navs Navs">
+                <ul>
+                    <li data-flag="carManage">
+                        <a href="javascript:void(0);"><i class="fa fa-rocket"></i><span>车辆信息</span></a>
+                        <div class="Navs">
+                            <ul>
+                                <li data-flag="groupBuy"><a href="/carManage/carList.htm"><span style="font-size: 13px;">车辆信息修正</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li data-flag="vinManage">
+                        <a href="javascript:void(0);"><i class="fa fa-rocket"></i><span>车架号信息</span></a>
+                        <div class="Navs">
+                            <ul>
+                                <li data-flag="groupBuy"><a href="/vin/check.htm"><span style="font-size: 13px;">车架号管理</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="Page-content">
+            <div class="Content container-fluid">
+                <div class="Content-header">
+                    <div class="Breadcrumb">
+                        <i class="fa fa-map-marker"></i>
+                        <th:block layout:fragment="breadcrumb">
+                        </th:block>
+                    </div>
+                    <h1 th:text="${pageTitle}"></h1>
+                </div>
+                <th:block layout:fragment="content">
+                </th:block>
+                <th:block layout:fragment="query">
+                </th:block>
+                <div class="Area Area--table">
+                    <table class="js-showDataTable"></table>
+                </div>
+            </div>
+            <th:block layout:fragment="modal">
+            </th:block>
+        </div>
+    </main>
+    <th:block layout:fragment="bodyAssets">
+    </th:block>
+    <!--<script th:src="@{//b.maihaoche.com/n/admin-bar/init.js}"></script>-->
+</body>
+</html>

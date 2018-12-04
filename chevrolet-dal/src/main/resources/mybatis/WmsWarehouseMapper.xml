@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.WmsWarehouseMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.WmsWarehouseDO">
+        <id column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="warehouse_no" jdbcType="VARCHAR" property="warehouseNo" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="capacity" jdbcType="BIGINT" property="capacity" />
+        <result column="used_capacity" jdbcType="BIGINT" property="usedCapacity" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="memo" jdbcType="VARCHAR" property="memo" />
+        <result column="supervision_rule_id" jdbcType="BIGINT" property="supervisionRuleId" />
+        <result column="service_rule_id" jdbcType="BIGINT" property="serviceRuleId" />
+        <result column="use_pda" jdbcType="TINYINT" property="usePda" />
+        <result column="use_position" jdbcType="TINYINT" property="usePosition" />
+        <result column="img_warehouse" jdbcType="VARCHAR" property="imgWarehouse" />
+        <result column="rental_agreement" jdbcType="VARCHAR" property="rentalAgreement" />
+        <result column="rent_start_time" jdbcType="TIMESTAMP" property="rentStartTime" />
+        <result column="rent_end_time" jdbcType="TIMESTAMP" property="rentEndTime" />
+        <result column="rent" jdbcType="BIGINT" property="rent" />
+        <result column="hosting_cost" jdbcType="BIGINT" property="hostingCost" />
+        <result column="rent_expiry_time" jdbcType="TIMESTAMP" property="rentExpiryTime" />
+        <result column="cost_effective_time" jdbcType="TIMESTAMP" property="costEffectiveTime" />
+        <result column="cost_expiry_time" jdbcType="TIMESTAMP" property="costExpiryTime" />
+        <result column="insurance_policy" jdbcType="VARCHAR" property="insurancePolicy" />
+        <result column="insurance_effective_time" jdbcType="TIMESTAMP" property="insuranceEffectiveTime" />
+        <result column="insurance_expiry_time" jdbcType="TIMESTAMP" property="insuranceExpiryTime" />
+        <result column="insurance_cost" jdbcType="BIGINT" property="insuranceCost" />
+        <result column="region" jdbcType="VARCHAR" property="region" />
+        <result column="bulid_dealer" jdbcType="VARCHAR" property="bulidDealer" />
+        <result column="dealer_type" jdbcType="VARCHAR" property="dealerType" />
+        <result column="dealer_brand" jdbcType="VARCHAR" property="dealerBrand" />
+        <result column="dock_person" jdbcType="VARCHAR" property="dockPerson" />
+        <result column="dock_person_phone" jdbcType="VARCHAR" property="dockPersonPhone" />
+        <result column="regulatory_type" jdbcType="VARCHAR" property="regulatoryType" />
+        <result column="regulatory_agreement" jdbcType="VARCHAR" property="regulatoryAgreement" />
+        <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+        <result column="regulatory_expiry_time" jdbcType="TIMESTAMP" property="regulatoryExpiryTime" />
+        <result column="business_agreement" jdbcType="VARCHAR" property="businessAgreement" />
+        <result column="regulatory_cost" jdbcType="BIGINT" property="regulatoryCost" />
+        <result column="regulatory_cost_effective_time" jdbcType="TIMESTAMP" property="regulatoryCostEffectiveTime" />
+        <result column="regulatory_cost_expiry_time" jdbcType="TIMESTAMP" property="regulatoryCostExpiryTime" />
+        <result column="margin_voucher" jdbcType="VARCHAR" property="marginVoucher" />
+        <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+        <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+        <result column="county_id" jdbcType="BIGINT" property="countyId" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        warehouse_id,gmt_create,gmt_modified,warehouse_no,name,address,province_id,city_id,capacity,used_capacity,type,status,memo,supervision_rule_id,service_rule_id,use_pda,use_position,img_warehouse,rental_agreement,rent_start_time,rent_end_time,rent,hosting_cost,rent_expiry_time,cost_effective_time,cost_expiry_time,insurance_policy,insurance_effective_time,insurance_expiry_time,insurance_cost,region,bulid_dealer,dealer_type,dealer_brand,dock_person,dock_person_phone,regulatory_type,regulatory_agreement,sign_time,regulatory_expiry_time,business_agreement,regulatory_cost,regulatory_cost_effective_time,regulatory_cost_expiry_time,margin_voucher,longitude,latitude,county_id
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsWarehouseQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from wms_warehouse
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from wms_warehouse where warehouse_id = #{warehouseId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from wms_warehouse where warehouse_id = #{warehouseId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.WmsWarehouseDO">
+        <selectKey keyProperty="warehouseId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into wms_warehouse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="warehouseNo != null">
+                warehouse_no,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="capacity != null">
+                capacity,
+            </if>
+            <if test="usedCapacity != null">
+                used_capacity,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="supervisionRuleId != null">
+                supervision_rule_id,
+            </if>
+            <if test="serviceRuleId != null">
+                service_rule_id,
+            </if>
+            <if test="usePda != null">
+                use_pda,
+            </if>
+            <if test="usePosition != null">
+                use_position,
+            </if>
+            <if test="imgWarehouse != null">
+                img_warehouse,
+            </if>
+            <if test="rentalAgreement != null">
+                rental_agreement,
+            </if>
+            <if test="rentStartTime != null">
+                rent_start_time,
+            </if>
+            <if test="rentEndTime != null">
+                rent_end_time,
+            </if>
+            <if test="rent != null">
+                rent,
+            </if>
+            <if test="hostingCost != null">
+                hosting_cost,
+            </if>
+            <if test="rentExpiryTime != null">
+                rent_expiry_time,
+            </if>
+            <if test="costEffectiveTime != null">
+                cost_effective_time,
+            </if>
+            <if test="costExpiryTime != null">
+                cost_expiry_time,
+            </if>
+            <if test="insurancePolicy != null">
+                insurance_policy,
+            </if>
+            <if test="insuranceEffectiveTime != null">
+                insurance_effective_time,
+            </if>
+            <if test="insuranceExpiryTime != null">
+                insurance_expiry_time,
+            </if>
+            <if test="insuranceCost != null">
+                insurance_cost,
+            </if>
+            <if test="region != null">
+                region,
+            </if>
+            <if test="bulidDealer != null">
+                bulid_dealer,
+            </if>
+            <if test="dealerType != null">
+                dealer_type,
+            </if>
+            <if test="dealerBrand != null">
+                dealer_brand,
+            </if>
+            <if test="dockPerson != null">
+                dock_person,
+            </if>
+            <if test="dockPersonPhone != null">
+                dock_person_phone,
+            </if>
+            <if test="regulatoryType != null">
+                regulatory_type,
+            </if>
+            <if test="regulatoryAgreement != null">
+                regulatory_agreement,
+            </if>
+            <if test="signTime != null">
+                sign_time,
+            </if>
+            <if test="regulatoryExpiryTime != null">
+                regulatory_expiry_time,
+            </if>
+            <if test="businessAgreement != null">
+                business_agreement,
+            </if>
+            <if test="regulatoryCost != null">
+                regulatory_cost,
+            </if>
+            <if test="regulatoryCostEffectiveTime != null">
+                regulatory_cost_effective_time,
+            </if>
+            <if test="regulatoryCostExpiryTime != null">
+                regulatory_cost_expiry_time,
+            </if>
+            <if test="marginVoucher != null">
+                margin_voucher,
+            </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="countyId != null">
+                county_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="warehouseNo != null">
+                #{warehouseNo,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="capacity != null">
+                #{capacity,jdbcType=BIGINT},
+            </if>
+            <if test="usedCapacity != null">
+                #{usedCapacity,jdbcType=BIGINT},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="supervisionRuleId != null">
+                #{supervisionRuleId,jdbcType=BIGINT},
+            </if>
+            <if test="serviceRuleId != null">
+                #{serviceRuleId,jdbcType=BIGINT},
+            </if>
+            <if test="usePda != null">
+                #{usePda,jdbcType=TINYINT},
+            </if>
+            <if test="usePosition != null">
+                #{usePosition,jdbcType=TINYINT},
+            </if>
+            <if test="imgWarehouse != null">
+                #{imgWarehouse,jdbcType=VARCHAR},
+            </if>
+            <if test="rentalAgreement != null">
+                #{rentalAgreement,jdbcType=VARCHAR},
+            </if>
+            <if test="rentStartTime != null">
+                #{rentStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rentEndTime != null">
+                #{rentEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rent != null">
+                #{rent,jdbcType=BIGINT},
+            </if>
+            <if test="hostingCost != null">
+                #{hostingCost,jdbcType=BIGINT},
+            </if>
+            <if test="rentExpiryTime != null">
+                #{rentExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="costEffectiveTime != null">
+                #{costEffectiveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="costExpiryTime != null">
+                #{costExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="insurancePolicy != null">
+                #{insurancePolicy,jdbcType=VARCHAR},
+            </if>
+            <if test="insuranceEffectiveTime != null">
+                #{insuranceEffectiveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="insuranceExpiryTime != null">
+                #{insuranceExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="insuranceCost != null">
+                #{insuranceCost,jdbcType=BIGINT},
+            </if>
+            <if test="region != null">
+                #{region,jdbcType=VARCHAR},
+            </if>
+            <if test="bulidDealer != null">
+                #{bulidDealer,jdbcType=VARCHAR},
+            </if>
+            <if test="dealerType != null">
+                #{dealerType,jdbcType=VARCHAR},
+            </if>
+            <if test="dealerBrand != null">
+                #{dealerBrand,jdbcType=VARCHAR},
+            </if>
+            <if test="dockPerson != null">
+                #{dockPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="dockPersonPhone != null">
+                #{dockPersonPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="regulatoryType != null">
+                #{regulatoryType,jdbcType=VARCHAR},
+            </if>
+            <if test="regulatoryAgreement != null">
+                #{regulatoryAgreement,jdbcType=VARCHAR},
+            </if>
+            <if test="signTime != null">
+                #{signTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regulatoryExpiryTime != null">
+                #{regulatoryExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="businessAgreement != null">
+                #{businessAgreement,jdbcType=VARCHAR},
+            </if>
+            <if test="regulatoryCost != null">
+                #{regulatoryCost,jdbcType=BIGINT},
+            </if>
+            <if test="regulatoryCostEffectiveTime != null">
+                #{regulatoryCostEffectiveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regulatoryCostExpiryTime != null">
+                #{regulatoryCostExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="marginVoucher != null">
+                #{marginVoucher,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude != null">
+                #{longitude,jdbcType=DECIMAL},
+            </if>
+            <if test="latitude != null">
+                #{latitude,jdbcType=DECIMAL},
+            </if>
+            <if test="countyId != null">
+                #{countyId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsWarehouseQuery" resultType="java.lang.Integer">
+        select count(*) from wms_warehouse
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.WmsWarehouseDO">
+        update wms_warehouse
+        <set>
+            gmt_modified=now(),
+            <if test="warehouseNo != null">
+                warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="capacity != null">
+                capacity = #{capacity,jdbcType=BIGINT},
+            </if>
+            <if test="usedCapacity != null">
+                used_capacity = #{usedCapacity,jdbcType=BIGINT},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="supervisionRuleId != null">
+                supervision_rule_id = #{supervisionRuleId,jdbcType=BIGINT},
+            </if>
+            <if test="serviceRuleId != null">
+                service_rule_id = #{serviceRuleId,jdbcType=BIGINT},
+            </if>
+            <if test="usePda != null">
+                use_pda = #{usePda,jdbcType=TINYINT},
+            </if>
+            <if test="usePosition != null">
+                use_position = #{usePosition,jdbcType=TINYINT},
+            </if>
+            <if test="imgWarehouse != null">
+                img_warehouse = #{imgWarehouse,jdbcType=VARCHAR},
+            </if>
+            <if test="rentalAgreement != null">
+                rental_agreement = #{rentalAgreement,jdbcType=VARCHAR},
+            </if>
+            <if test="rentStartTime != null">
+                rent_start_time = #{rentStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rentEndTime != null">
+                rent_end_time = #{rentEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rent != null">
+                rent = #{rent,jdbcType=BIGINT},
+            </if>
+            <if test="hostingCost != null">
+                hosting_cost = #{hostingCost,jdbcType=BIGINT},
+            </if>
+            <if test="rentExpiryTime != null">
+                rent_expiry_time = #{rentExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="costEffectiveTime != null">
+                cost_effective_time = #{costEffectiveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="costExpiryTime != null">
+                cost_expiry_time = #{costExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="insurancePolicy != null">
+                insurance_policy = #{insurancePolicy,jdbcType=VARCHAR},
+            </if>
+            <if test="insuranceEffectiveTime != null">
+                insurance_effective_time = #{insuranceEffectiveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="insuranceExpiryTime != null">
+                insurance_expiry_time = #{insuranceExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="insuranceCost != null">
+                insurance_cost = #{insuranceCost,jdbcType=BIGINT},
+            </if>
+            <if test="region != null">
+                region = #{region,jdbcType=VARCHAR},
+            </if>
+            <if test="bulidDealer != null">
+                bulid_dealer = #{bulidDealer,jdbcType=VARCHAR},
+            </if>
+            <if test="dealerType != null">
+                dealer_type = #{dealerType,jdbcType=VARCHAR},
+            </if>
+            <if test="dealerBrand != null">
+                dealer_brand = #{dealerBrand,jdbcType=VARCHAR},
+            </if>
+            <if test="dockPerson != null">
+                dock_person = #{dockPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="dockPersonPhone != null">
+                dock_person_phone = #{dockPersonPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="regulatoryType != null">
+                regulatory_type = #{regulatoryType,jdbcType=VARCHAR},
+            </if>
+            <if test="regulatoryAgreement != null">
+                regulatory_agreement = #{regulatoryAgreement,jdbcType=VARCHAR},
+            </if>
+            <if test="signTime != null">
+                sign_time = #{signTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regulatoryExpiryTime != null">
+                regulatory_expiry_time = #{regulatoryExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="businessAgreement != null">
+                business_agreement = #{businessAgreement,jdbcType=VARCHAR},
+            </if>
+            <if test="regulatoryCost != null">
+                regulatory_cost = #{regulatoryCost,jdbcType=BIGINT},
+            </if>
+            <if test="regulatoryCostEffectiveTime != null">
+                regulatory_cost_effective_time = #{regulatoryCostEffectiveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regulatoryCostExpiryTime != null">
+                regulatory_cost_expiry_time = #{regulatoryCostExpiryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="marginVoucher != null">
+                margin_voucher = #{marginVoucher,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude,jdbcType=DECIMAL},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude,jdbcType=DECIMAL},
+            </if>
+            <if test="countyId != null">
+                county_id = #{countyId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where warehouse_id = #{warehouseId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+    <!--<bean id="carRedoLogTaskImpl" class="com.chevrolet.core.daas.task.impl.CarRedoLogTaskImpl"/>-->
+    <!--<bean id="carOnlinePriceTaskImpl" class="com.chevrolet.core.daas.task.impl.CarOnlinePriceTaskImpl"/>-->
+    <!--<bean id="carSalesTaskImpl" class="com.chevrolet.core.daas.task.impl.CarSalesTaskImpl"/>-->
+    <bean id="assetRightAutoDiscardTaskImpl" class="com.chevrolet.core.task.impl.AssetRightAutoDiscardTaskImpl"/>
+    <bean id="carLockAutoDiscardTaskImpl" class="com.chevrolet.core.task.impl.CarLockAutoDiscardTaskImpl"/>
+
+    <!--<bean id="carRedoLogTask"-->
+          <!--class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+        <!--<property name="targetObject">-->
+            <!--<ref bean="carRedoLogTaskImpl"></ref>-->
+        <!--</property>-->
+        <!--<property name="targetMethod" value="redoLog"/>-->
+    <!--</bean>-->
+    <!--<bean id="carOnlinePriceTask"-->
+          <!--class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+        <!--<property name="targetObject">-->
+            <!--<ref bean="carOnlinePriceTaskImpl"></ref>-->
+        <!--</property>-->
+        <!--<property name="targetMethod" value="synOnlinePrice"/>-->
+    <!--</bean>-->
+    <!--<bean id="carSalesTask"-->
+          <!--class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+        <!--<property name="targetObject">-->
+            <!--<ref bean="carSalesTaskImpl"></ref>-->
+        <!--</property>-->
+        <!--<property name="targetMethod" value="synCarSales"/>-->
+    <!--</bean>-->
+    <bean id="assetRightAutoDiscardTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="assetRightAutoDiscardTaskImpl"></ref>
+        </property>
+        <property name="targetMethod" value="autoDiscard"/>
+    </bean>
+    <bean id="autoDiscardCarLock"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="carLockAutoDiscardTaskImpl"></ref>
+        </property>
+        <property name="targetMethod" value="autoDiscardCarLock"/>
+    </bean>
+
+    <!--<bean id="carRedoLogTaskTrigger"-->
+          <!--class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail" ref="carRedoLogTask"/>-->
+        <!--<property name="cronExpression" value="${task.redoLogCron}"/>-->
+    <!--</bean>-->
+    <!--<bean id="carOnlinePriceTaskTrigger"-->
+          <!--class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail" ref="carOnlinePriceTask"/>-->
+        <!--<property name="cronExpression" value="${task.carOnlineTaskCron}"/>-->
+    <!--</bean>-->
+    <!--<bean id="carSalesTaskTrigger"-->
+          <!--class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail" ref="carSalesTask"/>-->
+        <!--<property name="cronExpression" value="${task.carSalesCron}"/>-->
+    <!--</bean>-->
+    <bean id="assetRightAutoDiscardTaskTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="assetRightAutoDiscardTask"/>
+        <property name="cronExpression" value="${task.assetRightAutoDiscardCron}"/>
+    </bean>
+    <bean id="autoDiscardCarLockTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="autoDiscardCarLock"/>
+        <property name="cronExpression" value="${task.autoDiscardCarLockCron}"/>
+    </bean>
+
+    <bean id="SpringJobSchedulerFactoryBean"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+          autowire="no">
+        <property name="triggers">
+            <list>
+                <!--<ref local="carOnlinePriceTaskTrigger"/>-->
+                <!--<ref local="carSalesTaskTrigger"/>-->
+                <ref local="assetRightAutoDiscardTaskTrigger"/>
+                <ref local="autoDiscardCarLockTrigger"/>
+            </list>
+        </property>
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>
+            </props>
+        </property>
+        <property name="autoStartup">
+            <value>${task.autoStartup}</value>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.CarStatusLockExtMapper">
+
+    <update id="batchUpdateByCarLockId">
+        update cc_car_status_lock
+        <set>
+            gmt_modified=now(),
+            <if test="carStatusLockDO.carId != null">
+                car_id = #{carStatusLockDO.carId,jdbcType=BIGINT},
+            </if>
+            <if test="carStatusLockDO.bizType != null">
+                biz_type = #{carStatusLockDO.bizType,jdbcType=INTEGER},
+            </if>
+            <if test="carStatusLockDO.bizNo != null">
+                biz_no = #{carStatusLockDO.bizNo,jdbcType=VARCHAR},
+            </if>
+            <if test="carStatusLockDO.locked != null">
+                locked = #{carStatusLockDO.locked,jdbcType=INTEGER},
+            </if>
+            <if test="carStatusLockDO.ext1 != null">
+                ext_1 = #{carStatusLockDO.ext1,jdbcType=INTEGER},
+            </if>
+            <if test="carStatusLockDO.expireTime != null">
+                expire_time = #{carStatusLockDO.expireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="carStatusLockDO.isDeleted != null">
+                is_deleted = #{carStatusLockDO.isDeleted,jdbcType=INTEGER},
+            </if>
+        </set>
+        <where>
+            car_status_lock_id in
+            <foreach collection="carStatusLockIds" item="carStatusLockId"  open="(" separator="," close=")">
+                #{carStatusLockId,jdbcType=BIGINT}
+            </foreach>
+        </where>
+    </update>
+
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="carStatusLockId">
+        INSERT INTO cc_car_status_lock
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="list[0].carId != null">
+                car_id,
+            </if>
+            <if test="list[0].bizType != null">
+                biz_type,
+            </if>
+            <if test="list[0].bizNo != null">
+                biz_no,
+            </if>
+            <if test="list[0].locked != null">
+                locked,
+            </if>
+            <if test="list[0].ext1 != null">
+                ext_1,
+            </if>
+            <if test="list[0].expireTime != null">
+                expire_time,
+            </if>
+            <if test="list[0].isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        values
+        <foreach collection="list" item="carStatusLockDO" index="index" separator="," >
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                now(),now(),
+                <if test="carStatusLockDO.carId != null">
+                    #{carStatusLockDO.carId,jdbcType=BIGINT},
+                </if>
+                <if test="carStatusLockDO.bizType != null">
+                    #{carStatusLockDO.bizType,jdbcType=INTEGER},
+                </if>
+                <if test="carStatusLockDO.bizNo != null">
+                    #{carStatusLockDO.bizNo,jdbcType=VARCHAR},
+                </if>
+                <if test="carStatusLockDO.locked != null">
+                    #{carStatusLockDO.locked,jdbcType=INTEGER},
+                </if>
+                <if test="carStatusLockDO.ext1 != null">
+                    #{carStatusLockDO.ext1,jdbcType=INTEGER},
+                </if>
+                <if test="carStatusLockDO.expireTime != null">
+                    #{carStatusLockDO.expireTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="carStatusLockDO.isDeleted != null">
+                    #{carStatusLockDO.isDeleted,jdbcType=INTEGER},
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="lockByWhereClauseWithLock">
+        update cc_car_status_lock
+        <set>
+            locked = 1,
+            <if test="expireTime != null">
+                expire_time = #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+            gmt_modified=now()
+        </set>
+        <where>
+            car_id in
+            <foreach collection="carIds" item="carId"  open="(" separator="," close=")">
+                #{carId,jdbcType=BIGINT}
+            </foreach>
+            and biz_type = #{bizType,jdbcType=INTEGER}
+            and biz_no = #{bizNo,jdbcType=VARCHAR}
+                and locked = 0
+        </where>
+    </update>
+
+    <update id="unlockByWhereClauseWithLock">
+        update cc_car_status_lock set locked = 0,gmt_modified=now()
+        <where>
+            car_id in
+            <foreach collection="carIds" item="carId"  open="(" separator="," close=")">
+                #{carId,jdbcType=BIGINT}
+            </foreach>
+            and biz_type = #{bizType,jdbcType=INTEGER}
+            and biz_no = #{bizNo,jdbcType=VARCHAR}
+            and locked = 1
+        </where>
+    </update>
+
+    <update id="autoDiscardCarLock">
+        update cc_car_status_lock set locked=0,gmt_modified=now() where expire_time &lt; now() and locked = 1
+    </update>
+
+</mapper>

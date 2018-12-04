@@ -1,0 +1,121 @@
+#debug=true
+spring:
+  acura:
+      casDomain: http://lg.haimaiche.com
+      appKey: R3sb9vkbsmT5CW3Q
+      appId: 144098467806334976
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/views/
+    suffix: .html
+  profiles:
+    active: dev
+  application:
+        name: chevrolet
+        type: dubbo
+        expire: 1800
+    # Dubbo
+  dubbo:
+    application:
+      name: chevrolet
+      owner: pufang
+      organization: mhc
+    registry:
+      address: zookeeper://172.21.10.42:2181?backup=172.21.10.43:2181
+    protocol:
+      name: dubbo
+      port: 20884
+      host: 127.0.0.1
+    provider:
+      version: 1.0_local_gujian
+      timeout: 5000
+    consumer:
+      version: 1.0_dev_finance_docker
+      timeout: 15000
+      retries: 0
+      check: false
+      infiniti:
+        version: 1.0_test_search_docker
+      acura:
+        version: 1.0_test_crm_docker
+      gtr:
+        version: 1.0_dev_finance_docker
+  sleuth:
+      sampler:
+        percentage: 10
+  zipkin:
+    base-url: http://zk.haimaiche.net:9411
+  redis:
+    host: 120.55.119.28
+    password: zhimaguanmen
+    port: 6399
+    timeout: 0
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://daily-mhc-o.mysql.rds.aliyuncs.com:3306/db_b2b
+    username: b2b
+    password: b2bdwj
+    validationQuery: select version()
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    initialSize: 5
+    minIdle: 5
+    maxActive: 200
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    testWhileIdle: false
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    filters: stat,wall,log4j
+    maxOpenPreparedStatementPerConnectionSize: 100
+    driverClassName: com.mysql.jdbc.Driver
+  ons:
+    topic:
+      cccar: tp_chevrolet_cccar_test
+    pid:
+      cccar: PID_chevrolet_test_cccar
+server:
+  port: 8080
+task:
+  autoStartup: false
+  carOnlineTaskCron: 0 0 21 * * ?
+  carSalesCron: 0 0 16 * * ?
+  redoLogCron: 0/30 * * * * ?
+  assetRightAutoDiscardCron: 0/30 * * * * ?
+  autoDiscardCarLockCron: 0/30 * * * * ?
+daas:
+  appId: dquttewaj1cgtypvudorcqqyt5up3wwg
+  appKey: qag57qp83611vxw9lnlbej4keuoaq4wh
+  onlinePriceUrl: http://www.daas-auto.com/APIS/dm/newCarSales/v1/quotes
+  salesUrl: http://www.daas-auto.com/APIS/dm/newCarSales/v1/sales/terminalSales
+
+chevrolet:
+  assetRight:
+    topic: tp_carCenter_asset_right
+
+camaro:
+  mq:
+    name-server-address: 172.21.10.116:9876
+    producer-group: PID_chevrolet_carCenter_test
+#logging
+logging:
+  appname: chevrolet
+  apppath: ${HOME}/app/logs
+  level:
+    root: info
+    mhcframework: info
+    spring: info
+    mhc: info
+    dubbo: info
+  config: classpath:logback-spring.xml

@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.CarSnapMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.CarSnapDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="car_id" jdbcType="BIGINT" property="carId" />
+        <result column="order_id" jdbcType="BIGINT" property="orderId" />
+        <result column="loan_order_id" jdbcType="BIGINT" property="loanOrderId" />
+        <result column="seller_id" jdbcType="BIGINT" property="sellerId" />
+        <result column="model_id" jdbcType="BIGINT" property="modelId" />
+        <result column="model_name" jdbcType="VARCHAR" property="modelName" />
+        <result column="car_area" jdbcType="VARCHAR" property="carArea" />
+        <result column="car_status" jdbcType="TINYINT" property="carStatus" />
+        <result column="reach_date" jdbcType="TIMESTAMP" property="reachDate" />
+        <result column="formalities_status" jdbcType="INTEGER" property="formalitiesStatus" />
+        <result column="seller_price" jdbcType="BIGINT" property="sellerPrice" />
+        <result column="invoice_price" jdbcType="DECIMAL" property="invoicePrice" />
+        <result column="car_unique" jdbcType="VARCHAR" property="carUnique" />
+        <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+        <result column="inner_id" jdbcType="BIGINT" property="innerId" />
+        <result column="outer_id" jdbcType="BIGINT" property="outerId" />
+        <result column="outer_color_name" jdbcType="VARCHAR" property="outerColorName" />
+        <result column="inner_color_name" jdbcType="VARCHAR" property="innerColorName" />
+        <result column="send_city" jdbcType="VARCHAR" property="sendCity" />
+        <result column="benchmark" jdbcType="TINYINT" property="benchmark" />
+        <result column="fuel" jdbcType="INTEGER" property="fuel" />
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="insurance" jdbcType="TINYINT" property="insurance" />
+        <result column="configure" jdbcType="VARCHAR" property="configure" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="sanbao" jdbcType="INTEGER" property="sanbao" />
+        <result column="tip_loan_amount" jdbcType="BIGINT" property="tipLoanAmount" />
+        <result column="tip_margin_amount" jdbcType="BIGINT" property="tipMarginAmount" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+        <result column="series_id" jdbcType="BIGINT" property="seriesId" />
+        <result column="series_name" jdbcType="VARCHAR" property="seriesName" />
+        <result column="spec_id" jdbcType="INTEGER" property="specId" />
+        <result column="spec_name" jdbcType="VARCHAR" property="specName" />
+        <result column="guide_price" jdbcType="VARCHAR" property="guidePrice" />
+        <result column="market_price" jdbcType="VARCHAR" property="marketPrice" />
+        <result column="emission" jdbcType="VARCHAR" property="emission" />
+        <result column="pro_submit_procedure_time" jdbcType="TIMESTAMP" property="proSubmitProcedureTime" />
+        <result column="attach" jdbcType="TINYINT" property="attach" />
+        <result column="lo_amount" jdbcType="BIGINT" property="loAmount" />
+        <result column="mar_amount" jdbcType="BIGINT" property="marAmount" />
+        <result column="car_loan_no" jdbcType="VARCHAR" property="carLoanNo" />
+        <result column="unique_num" jdbcType="INTEGER" property="uniqueNum" />
+        <result column="order_type" jdbcType="INTEGER" property="orderType" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id,gmt_create,gmt_modified,car_id,order_id,loan_order_id,seller_id,model_id,model_name,car_area,car_status,reach_date,formalities_status,seller_price,invoice_price,car_unique,img_url,is_deleted,inner_id,outer_id,outer_color_name,inner_color_name,send_city,benchmark,fuel,quantity,insurance,configure,remark,sanbao,tip_loan_amount,tip_margin_amount,brand_id,brand_name,series_id,series_name,spec_id,spec_name,guide_price,market_price,emission,pro_submit_procedure_time,attach,lo_amount,mar_amount,car_loan_no,unique_num,order_type
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.CarSnapQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from b2b_car_snap
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from b2b_car_snap where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from b2b_car_snap where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.CarSnapDO">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into b2b_car_snap
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="carId != null">
+                car_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="loanOrderId != null">
+                loan_order_id,
+            </if>
+            <if test="sellerId != null">
+                seller_id,
+            </if>
+            <if test="modelId != null">
+                model_id,
+            </if>
+            <if test="modelName != null">
+                model_name,
+            </if>
+            <if test="carArea != null">
+                car_area,
+            </if>
+            <if test="carStatus != null">
+                car_status,
+            </if>
+            <if test="reachDate != null">
+                reach_date,
+            </if>
+            <if test="formalitiesStatus != null">
+                formalities_status,
+            </if>
+            <if test="sellerPrice != null">
+                seller_price,
+            </if>
+            <if test="invoicePrice != null">
+                invoice_price,
+            </if>
+            <if test="carUnique != null">
+                car_unique,
+            </if>
+            <if test="imgUrl != null">
+                img_url,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="innerId != null">
+                inner_id,
+            </if>
+            <if test="outerId != null">
+                outer_id,
+            </if>
+            <if test="outerColorName != null">
+                outer_color_name,
+            </if>
+            <if test="innerColorName != null">
+                inner_color_name,
+            </if>
+            <if test="sendCity != null">
+                send_city,
+            </if>
+            <if test="benchmark != null">
+                benchmark,
+            </if>
+            <if test="fuel != null">
+                fuel,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="insurance != null">
+                insurance,
+            </if>
+            <if test="configure != null">
+                configure,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="sanbao != null">
+                sanbao,
+            </if>
+            <if test="tipLoanAmount != null">
+                tip_loan_amount,
+            </if>
+            <if test="tipMarginAmount != null">
+                tip_margin_amount,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="brandName != null">
+                brand_name,
+            </if>
+            <if test="seriesId != null">
+                series_id,
+            </if>
+            <if test="seriesName != null">
+                series_name,
+            </if>
+            <if test="specId != null">
+                spec_id,
+            </if>
+            <if test="specName != null">
+                spec_name,
+            </if>
+            <if test="guidePrice != null">
+                guide_price,
+            </if>
+            <if test="marketPrice != null">
+                market_price,
+            </if>
+            <if test="emission != null">
+                emission,
+            </if>
+            <if test="proSubmitProcedureTime != null">
+                pro_submit_procedure_time,
+            </if>
+            <if test="attach != null">
+                attach,
+            </if>
+            <if test="loAmount != null">
+                lo_amount,
+            </if>
+            <if test="marAmount != null">
+                mar_amount,
+            </if>
+            <if test="carLoanNo != null">
+                car_loan_no,
+            </if>
+            <if test="uniqueNum != null">
+                unique_num,
+            </if>
+            <if test="orderType != null">
+                order_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="carId != null">
+                #{carId,jdbcType=BIGINT},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="loanOrderId != null">
+                #{loanOrderId,jdbcType=BIGINT},
+            </if>
+            <if test="sellerId != null">
+                #{sellerId,jdbcType=BIGINT},
+            </if>
+            <if test="modelId != null">
+                #{modelId,jdbcType=BIGINT},
+            </if>
+            <if test="modelName != null">
+                #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="carArea != null">
+                #{carArea,jdbcType=VARCHAR},
+            </if>
+            <if test="carStatus != null">
+                #{carStatus,jdbcType=TINYINT},
+            </if>
+            <if test="reachDate != null">
+                #{reachDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="formalitiesStatus != null">
+                #{formalitiesStatus,jdbcType=INTEGER},
+            </if>
+            <if test="sellerPrice != null">
+                #{sellerPrice,jdbcType=BIGINT},
+            </if>
+            <if test="invoicePrice != null">
+                #{invoicePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="carUnique != null">
+                #{carUnique,jdbcType=VARCHAR},
+            </if>
+            <if test="imgUrl != null">
+                #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="innerId != null">
+                #{innerId,jdbcType=BIGINT},
+            </if>
+            <if test="outerId != null">
+                #{outerId,jdbcType=BIGINT},
+            </if>
+            <if test="outerColorName != null">
+                #{outerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="innerColorName != null">
+                #{innerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="sendCity != null">
+                #{sendCity,jdbcType=VARCHAR},
+            </if>
+            <if test="benchmark != null">
+                #{benchmark,jdbcType=TINYINT},
+            </if>
+            <if test="fuel != null">
+                #{fuel,jdbcType=INTEGER},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="insurance != null">
+                #{insurance,jdbcType=TINYINT},
+            </if>
+            <if test="configure != null">
+                #{configure,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="sanbao != null">
+                #{sanbao,jdbcType=INTEGER},
+            </if>
+            <if test="tipLoanAmount != null">
+                #{tipLoanAmount,jdbcType=BIGINT},
+            </if>
+            <if test="tipMarginAmount != null">
+                #{tipMarginAmount,jdbcType=BIGINT},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="brandName != null">
+                #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="seriesId != null">
+                #{seriesId,jdbcType=BIGINT},
+            </if>
+            <if test="seriesName != null">
+                #{seriesName,jdbcType=VARCHAR},
+            </if>
+            <if test="specId != null">
+                #{specId,jdbcType=INTEGER},
+            </if>
+            <if test="specName != null">
+                #{specName,jdbcType=VARCHAR},
+            </if>
+            <if test="guidePrice != null">
+                #{guidePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="marketPrice != null">
+                #{marketPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="emission != null">
+                #{emission,jdbcType=VARCHAR},
+            </if>
+            <if test="proSubmitProcedureTime != null">
+                #{proSubmitProcedureTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="attach != null">
+                #{attach,jdbcType=TINYINT},
+            </if>
+            <if test="loAmount != null">
+                #{loAmount,jdbcType=BIGINT},
+            </if>
+            <if test="marAmount != null">
+                #{marAmount,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanNo != null">
+                #{carLoanNo,jdbcType=VARCHAR},
+            </if>
+            <if test="uniqueNum != null">
+                #{uniqueNum,jdbcType=INTEGER},
+            </if>
+            <if test="orderType != null">
+                #{orderType,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.CarSnapQuery" resultType="java.lang.Integer">
+        select count(*) from b2b_car_snap
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.CarSnapDO">
+        update b2b_car_snap
+        <set>
+            gmt_modified=now(),
+            <if test="carId != null">
+                car_id = #{carId,jdbcType=BIGINT},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="loanOrderId != null">
+                loan_order_id = #{loanOrderId,jdbcType=BIGINT},
+            </if>
+            <if test="sellerId != null">
+                seller_id = #{sellerId,jdbcType=BIGINT},
+            </if>
+            <if test="modelId != null">
+                model_id = #{modelId,jdbcType=BIGINT},
+            </if>
+            <if test="modelName != null">
+                model_name = #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="carArea != null">
+                car_area = #{carArea,jdbcType=VARCHAR},
+            </if>
+            <if test="carStatus != null">
+                car_status = #{carStatus,jdbcType=TINYINT},
+            </if>
+            <if test="reachDate != null">
+                reach_date = #{reachDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="formalitiesStatus != null">
+                formalities_status = #{formalitiesStatus,jdbcType=INTEGER},
+            </if>
+            <if test="sellerPrice != null">
+                seller_price = #{sellerPrice,jdbcType=BIGINT},
+            </if>
+            <if test="invoicePrice != null">
+                invoice_price = #{invoicePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="carUnique != null">
+                car_unique = #{carUnique,jdbcType=VARCHAR},
+            </if>
+            <if test="imgUrl != null">
+                img_url = #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="innerId != null">
+                inner_id = #{innerId,jdbcType=BIGINT},
+            </if>
+            <if test="outerId != null">
+                outer_id = #{outerId,jdbcType=BIGINT},
+            </if>
+            <if test="outerColorName != null">
+                outer_color_name = #{outerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="innerColorName != null">
+                inner_color_name = #{innerColorName,jdbcType=VARCHAR},
+            </if>
+            <if test="sendCity != null">
+                send_city = #{sendCity,jdbcType=VARCHAR},
+            </if>
+            <if test="benchmark != null">
+                benchmark = #{benchmark,jdbcType=TINYINT},
+            </if>
+            <if test="fuel != null">
+                fuel = #{fuel,jdbcType=INTEGER},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="insurance != null">
+                insurance = #{insurance,jdbcType=TINYINT},
+            </if>
+            <if test="configure != null">
+                configure = #{configure,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="sanbao != null">
+                sanbao = #{sanbao,jdbcType=INTEGER},
+            </if>
+            <if test="tipLoanAmount != null">
+                tip_loan_amount = #{tipLoanAmount,jdbcType=BIGINT},
+            </if>
+            <if test="tipMarginAmount != null">
+                tip_margin_amount = #{tipMarginAmount,jdbcType=BIGINT},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="brandName != null">
+                brand_name = #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="seriesId != null">
+                series_id = #{seriesId,jdbcType=BIGINT},
+            </if>
+            <if test="seriesName != null">
+                series_name = #{seriesName,jdbcType=VARCHAR},
+            </if>
+            <if test="specId != null">
+                spec_id = #{specId,jdbcType=INTEGER},
+            </if>
+            <if test="specName != null">
+                spec_name = #{specName,jdbcType=VARCHAR},
+            </if>
+            <if test="guidePrice != null">
+                guide_price = #{guidePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="marketPrice != null">
+                market_price = #{marketPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="emission != null">
+                emission = #{emission,jdbcType=VARCHAR},
+            </if>
+            <if test="proSubmitProcedureTime != null">
+                pro_submit_procedure_time = #{proSubmitProcedureTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="attach != null">
+                attach = #{attach,jdbcType=TINYINT},
+            </if>
+            <if test="loAmount != null">
+                lo_amount = #{loAmount,jdbcType=BIGINT},
+            </if>
+            <if test="marAmount != null">
+                mar_amount = #{marAmount,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanNo != null">
+                car_loan_no = #{carLoanNo,jdbcType=VARCHAR},
+            </if>
+            <if test="uniqueNum != null">
+                unique_num = #{uniqueNum,jdbcType=INTEGER},
+            </if>
+            <if test="orderType != null">
+                order_type = #{orderType,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

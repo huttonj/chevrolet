@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.TmsTransportOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.TmsTransportOrderDO">
+        <id column="transport_order_id" jdbcType="BIGINT" property="transportOrderId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="biz_id" jdbcType="BIGINT" property="bizId" />
+        <result column="biz_order_no" jdbcType="VARCHAR" property="bizOrderNo" />
+        <result column="biz_order_name" jdbcType="VARCHAR" property="bizOrderName" />
+        <result column="biz_type" jdbcType="TINYINT" property="bizType" />
+        <result column="source_type" jdbcType="TINYINT" property="sourceType" />
+        <result column="carrier_id" jdbcType="BIGINT" property="carrierId" />
+        <result column="carrier_name" jdbcType="VARCHAR" property="carrierName" />
+        <result column="carrier_staff_id" jdbcType="BIGINT" property="carrierStaffId" />
+        <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+        <result column="staff_phone_number" jdbcType="VARCHAR" property="staffPhoneNumber" />
+        <result column="client_id" jdbcType="BIGINT" property="clientId" />
+        <result column="client_name" jdbcType="VARCHAR" property="clientName" />
+        <result column="client_contact_id" jdbcType="BIGINT" property="clientContactId" />
+        <result column="client_contact" jdbcType="VARCHAR" property="clientContact" />
+        <result column="client_contact_phone" jdbcType="VARCHAR" property="clientContactPhone" />
+        <result column="img_transport_contract" jdbcType="VARCHAR" property="imgTransportContract" />
+        <result column="shipment_time" jdbcType="TIMESTAMP" property="shipmentTime" />
+        <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+        <result column="has_invoice" jdbcType="TINYINT" property="hasInvoice" />
+        <result column="transport_price" jdbcType="INTEGER" property="transportPrice" />
+        <result column="service_price" jdbcType="INTEGER" property="servicePrice" />
+        <result column="insurance" jdbcType="INTEGER" property="insurance" />
+        <result column="consignee" jdbcType="VARCHAR" property="consignee" />
+        <result column="consignee_phone" jdbcType="VARCHAR" property="consigneePhone" />
+        <result column="consignee_address" jdbcType="VARCHAR" property="consigneeAddress" />
+        <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+        <result column="carrier_source_type" jdbcType="TINYINT" property="carrierSourceType" />
+        <result column="out_transport_order_no" jdbcType="VARCHAR" property="outTransportOrderNo" />
+        <result column="client_remarks" jdbcType="VARCHAR" property="clientRemarks" />
+        <result column="dispatcher_remarks" jdbcType="VARCHAR" property="dispatcherRemarks" />
+        <result column="commissioner" jdbcType="VARCHAR" property="commissioner" />
+        <result column="controlled_status" jdbcType="TINYINT" property="controlledStatus" />
+        <result column="qr_code" jdbcType="VARCHAR" property="qrCode" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="old_transport_price" jdbcType="INTEGER" property="oldTransportPrice" />
+        <result column="transport_type" jdbcType="TINYINT" property="transportType" />
+        <result column="examine_status" jdbcType="TINYINT" property="examineStatus" />
+        <result column="finance_review_status" jdbcType="TINYINT" property="financeReviewStatus" />
+        <result column="finance_loan_status" jdbcType="TINYINT" property="financeLoanStatus" />
+        <result column="distribute_model" jdbcType="TINYINT" property="distributeModel" />
+        <result column="distribute_status" jdbcType="TINYINT" property="distributeStatus" />
+        <result column="distribute_time" jdbcType="TIMESTAMP" property="distributeTime" />
+        <result column="allot_price_status" jdbcType="TINYINT" property="allotPriceStatus" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        transport_order_id,gmt_create,gmt_modified,order_no,biz_id,biz_order_no,biz_order_name,biz_type,source_type,carrier_id,carrier_name,carrier_staff_id,staff_name,staff_phone_number,client_id,client_name,client_contact_id,client_contact,client_contact_phone,img_transport_contract,shipment_time,payment_time,has_invoice,transport_price,service_price,insurance,consignee,consignee_phone,consignee_address,order_status,carrier_source_type,out_transport_order_no,client_remarks,dispatcher_remarks,commissioner,controlled_status,qr_code,status,old_transport_price,transport_type,examine_status,finance_review_status,finance_loan_status,distribute_model,distribute_status,distribute_time,allot_price_status
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.TmsTransportOrderQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from tms_transport_order
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from tms_transport_order where transport_order_id = #{transportOrderId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tms_transport_order where transport_order_id = #{transportOrderId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.TmsTransportOrderDO">
+        <selectKey keyProperty="transportOrderId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into tms_transport_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="bizId != null">
+                biz_id,
+            </if>
+            <if test="bizOrderNo != null">
+                biz_order_no,
+            </if>
+            <if test="bizOrderName != null">
+                biz_order_name,
+            </if>
+            <if test="bizType != null">
+                biz_type,
+            </if>
+            <if test="sourceType != null">
+                source_type,
+            </if>
+            <if test="carrierId != null">
+                carrier_id,
+            </if>
+            <if test="carrierName != null">
+                carrier_name,
+            </if>
+            <if test="carrierStaffId != null">
+                carrier_staff_id,
+            </if>
+            <if test="staffName != null">
+                staff_name,
+            </if>
+            <if test="staffPhoneNumber != null">
+                staff_phone_number,
+            </if>
+            <if test="clientId != null">
+                client_id,
+            </if>
+            <if test="clientName != null">
+                client_name,
+            </if>
+            <if test="clientContactId != null">
+                client_contact_id,
+            </if>
+            <if test="clientContact != null">
+                client_contact,
+            </if>
+            <if test="clientContactPhone != null">
+                client_contact_phone,
+            </if>
+            <if test="imgTransportContract != null">
+                img_transport_contract,
+            </if>
+            <if test="shipmentTime != null">
+                shipment_time,
+            </if>
+            <if test="paymentTime != null">
+                payment_time,
+            </if>
+            <if test="hasInvoice != null">
+                has_invoice,
+            </if>
+            <if test="transportPrice != null">
+                transport_price,
+            </if>
+            <if test="servicePrice != null">
+                service_price,
+            </if>
+            <if test="insurance != null">
+                insurance,
+            </if>
+            <if test="consignee != null">
+                consignee,
+            </if>
+            <if test="consigneePhone != null">
+                consignee_phone,
+            </if>
+            <if test="consigneeAddress != null">
+                consignee_address,
+            </if>
+            <if test="orderStatus != null">
+                order_status,
+            </if>
+            <if test="carrierSourceType != null">
+                carrier_source_type,
+            </if>
+            <if test="outTransportOrderNo != null">
+                out_transport_order_no,
+            </if>
+            <if test="clientRemarks != null">
+                client_remarks,
+            </if>
+            <if test="dispatcherRemarks != null">
+                dispatcher_remarks,
+            </if>
+            <if test="commissioner != null">
+                commissioner,
+            </if>
+            <if test="controlledStatus != null">
+                controlled_status,
+            </if>
+            <if test="qrCode != null">
+                qr_code,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="oldTransportPrice != null">
+                old_transport_price,
+            </if>
+            <if test="transportType != null">
+                transport_type,
+            </if>
+            <if test="examineStatus != null">
+                examine_status,
+            </if>
+            <if test="financeReviewStatus != null">
+                finance_review_status,
+            </if>
+            <if test="financeLoanStatus != null">
+                finance_loan_status,
+            </if>
+            <if test="distributeModel != null">
+                distribute_model,
+            </if>
+            <if test="distributeStatus != null">
+                distribute_status,
+            </if>
+            <if test="distributeTime != null">
+                distribute_time,
+            </if>
+            <if test="allotPriceStatus != null">
+                allot_price_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="bizId != null">
+                #{bizId,jdbcType=BIGINT},
+            </if>
+            <if test="bizOrderNo != null">
+                #{bizOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="bizOrderName != null">
+                #{bizOrderName,jdbcType=VARCHAR},
+            </if>
+            <if test="bizType != null">
+                #{bizType,jdbcType=TINYINT},
+            </if>
+            <if test="sourceType != null">
+                #{sourceType,jdbcType=TINYINT},
+            </if>
+            <if test="carrierId != null">
+                #{carrierId,jdbcType=BIGINT},
+            </if>
+            <if test="carrierName != null">
+                #{carrierName,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierStaffId != null">
+                #{carrierStaffId,jdbcType=BIGINT},
+            </if>
+            <if test="staffName != null">
+                #{staffName,jdbcType=VARCHAR},
+            </if>
+            <if test="staffPhoneNumber != null">
+                #{staffPhoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="clientId != null">
+                #{clientId,jdbcType=BIGINT},
+            </if>
+            <if test="clientName != null">
+                #{clientName,jdbcType=VARCHAR},
+            </if>
+            <if test="clientContactId != null">
+                #{clientContactId,jdbcType=BIGINT},
+            </if>
+            <if test="clientContact != null">
+                #{clientContact,jdbcType=VARCHAR},
+            </if>
+            <if test="clientContactPhone != null">
+                #{clientContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="imgTransportContract != null">
+                #{imgTransportContract,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentTime != null">
+                #{shipmentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="paymentTime != null">
+                #{paymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="hasInvoice != null">
+                #{hasInvoice,jdbcType=TINYINT},
+            </if>
+            <if test="transportPrice != null">
+                #{transportPrice,jdbcType=INTEGER},
+            </if>
+            <if test="servicePrice != null">
+                #{servicePrice,jdbcType=INTEGER},
+            </if>
+            <if test="insurance != null">
+                #{insurance,jdbcType=INTEGER},
+            </if>
+            <if test="consignee != null">
+                #{consignee,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneePhone != null">
+                #{consigneePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneeAddress != null">
+                #{consigneeAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="carrierSourceType != null">
+                #{carrierSourceType,jdbcType=TINYINT},
+            </if>
+            <if test="outTransportOrderNo != null">
+                #{outTransportOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="clientRemarks != null">
+                #{clientRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatcherRemarks != null">
+                #{dispatcherRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="commissioner != null">
+                #{commissioner,jdbcType=VARCHAR},
+            </if>
+            <if test="controlledStatus != null">
+                #{controlledStatus,jdbcType=TINYINT},
+            </if>
+            <if test="qrCode != null">
+                #{qrCode,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="oldTransportPrice != null">
+                #{oldTransportPrice,jdbcType=INTEGER},
+            </if>
+            <if test="transportType != null">
+                #{transportType,jdbcType=TINYINT},
+            </if>
+            <if test="examineStatus != null">
+                #{examineStatus,jdbcType=TINYINT},
+            </if>
+            <if test="financeReviewStatus != null">
+                #{financeReviewStatus,jdbcType=TINYINT},
+            </if>
+            <if test="financeLoanStatus != null">
+                #{financeLoanStatus,jdbcType=TINYINT},
+            </if>
+            <if test="distributeModel != null">
+                #{distributeModel,jdbcType=TINYINT},
+            </if>
+            <if test="distributeStatus != null">
+                #{distributeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="distributeTime != null">
+                #{distributeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="allotPriceStatus != null">
+                #{allotPriceStatus,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.TmsTransportOrderQuery" resultType="java.lang.Integer">
+        select count(*) from tms_transport_order
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.TmsTransportOrderDO">
+        update tms_transport_order
+        <set>
+            gmt_modified=now(),
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="bizId != null">
+                biz_id = #{bizId,jdbcType=BIGINT},
+            </if>
+            <if test="bizOrderNo != null">
+                biz_order_no = #{bizOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="bizOrderName != null">
+                biz_order_name = #{bizOrderName,jdbcType=VARCHAR},
+            </if>
+            <if test="bizType != null">
+                biz_type = #{bizType,jdbcType=TINYINT},
+            </if>
+            <if test="sourceType != null">
+                source_type = #{sourceType,jdbcType=TINYINT},
+            </if>
+            <if test="carrierId != null">
+                carrier_id = #{carrierId,jdbcType=BIGINT},
+            </if>
+            <if test="carrierName != null">
+                carrier_name = #{carrierName,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierStaffId != null">
+                carrier_staff_id = #{carrierStaffId,jdbcType=BIGINT},
+            </if>
+            <if test="staffName != null">
+                staff_name = #{staffName,jdbcType=VARCHAR},
+            </if>
+            <if test="staffPhoneNumber != null">
+                staff_phone_number = #{staffPhoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="clientId != null">
+                client_id = #{clientId,jdbcType=BIGINT},
+            </if>
+            <if test="clientName != null">
+                client_name = #{clientName,jdbcType=VARCHAR},
+            </if>
+            <if test="clientContactId != null">
+                client_contact_id = #{clientContactId,jdbcType=BIGINT},
+            </if>
+            <if test="clientContact != null">
+                client_contact = #{clientContact,jdbcType=VARCHAR},
+            </if>
+            <if test="clientContactPhone != null">
+                client_contact_phone = #{clientContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="imgTransportContract != null">
+                img_transport_contract = #{imgTransportContract,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentTime != null">
+                shipment_time = #{shipmentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="paymentTime != null">
+                payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="hasInvoice != null">
+                has_invoice = #{hasInvoice,jdbcType=TINYINT},
+            </if>
+            <if test="transportPrice != null">
+                transport_price = #{transportPrice,jdbcType=INTEGER},
+            </if>
+            <if test="servicePrice != null">
+                service_price = #{servicePrice,jdbcType=INTEGER},
+            </if>
+            <if test="insurance != null">
+                insurance = #{insurance,jdbcType=INTEGER},
+            </if>
+            <if test="consignee != null">
+                consignee = #{consignee,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneePhone != null">
+                consignee_phone = #{consigneePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneeAddress != null">
+                consignee_address = #{consigneeAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="carrierSourceType != null">
+                carrier_source_type = #{carrierSourceType,jdbcType=TINYINT},
+            </if>
+            <if test="outTransportOrderNo != null">
+                out_transport_order_no = #{outTransportOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="clientRemarks != null">
+                client_remarks = #{clientRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="dispatcherRemarks != null">
+                dispatcher_remarks = #{dispatcherRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="commissioner != null">
+                commissioner = #{commissioner,jdbcType=VARCHAR},
+            </if>
+            <if test="controlledStatus != null">
+                controlled_status = #{controlledStatus,jdbcType=TINYINT},
+            </if>
+            <if test="qrCode != null">
+                qr_code = #{qrCode,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="oldTransportPrice != null">
+                old_transport_price = #{oldTransportPrice,jdbcType=INTEGER},
+            </if>
+            <if test="transportType != null">
+                transport_type = #{transportType,jdbcType=TINYINT},
+            </if>
+            <if test="examineStatus != null">
+                examine_status = #{examineStatus,jdbcType=TINYINT},
+            </if>
+            <if test="financeReviewStatus != null">
+                finance_review_status = #{financeReviewStatus,jdbcType=TINYINT},
+            </if>
+            <if test="financeLoanStatus != null">
+                finance_loan_status = #{financeLoanStatus,jdbcType=TINYINT},
+            </if>
+            <if test="distributeModel != null">
+                distribute_model = #{distributeModel,jdbcType=TINYINT},
+            </if>
+            <if test="distributeStatus != null">
+                distribute_status = #{distributeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="distributeTime != null">
+                distribute_time = #{distributeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="allotPriceStatus != null">
+                allot_price_status = #{allotPriceStatus,jdbcType=TINYINT},
+            </if>
+        </set>
+        where transport_order_id = #{transportOrderId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

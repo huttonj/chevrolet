@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="center"
+      th:with="pageTitle='车架号信息管理', primaryPage='vinManage', secondaryPage='check'">
+<head>
+</head>
+<body>
+
+<th:block layout:fragment="query">
+    <div th:fragment="queryArea" class="Area Area--query">
+        <form class="Card">
+            <div class="Card-content">
+                <div class="row">
+                    <div class="form-group col-xs-6 col-sm-4 col-lg-3">
+                        <label>车架号</label>
+                        <input type="text" id="vin" name="vin" class="form-control input-sm" placeholder="请输入需要查询的vin码，不可为空"/>
+                    </div>
+                </div>
+                <div class="Card-footer">
+                    <th:block layout:fragment="footerOfCommonQueryArea">
+                        <button id="checkVINBtn" type="button" class="btn btn-default btn-sm"><i class="fa fa-filter"></i><span>校验</span></button>
+                        <button id="showAddVINBtn" type="button" class="btn btn-default btn-sm"><i class="fa fa-filter"></i><span>添加VIN白名单</span></button>
+                        <!--<button type="reset" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i><span>重置</span></button>-->
+                    </th:block>
+                </div>
+            </div>
+        </form>
+    </div>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div class="modal fade" id="addVinModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <h4 class="modal-title">车架号</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="messageForm" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                车架号:
+                                <textarea class="form-control input-sm" id="vins" name="content"
+                                          rows="4" placeholder="多个请用回车或者 ， 或者 ； 或者 , 或者 ; 中的一个进行分隔"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button id="addVINSBtn" type="button" class="btn btn-primary">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+
+
+<th:block layout:fragment="bodyAssets">
+    <script th:src="@{/views/vinManage/vin.js(t=${timestamp})}"></script>
+</th:block>
+
+<ul layout:fragment="breadcrumb">
+    <li>车架号信息管理</li>
+</ul>
+</body>
+</html>

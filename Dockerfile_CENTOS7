@@ -1,0 +1,8 @@
+#比较常用的基础镜像有ubuntu，centos。这里使用了一个极小的基础镜像alpine
+FROM daocloud.io/maihaoche/java_base:1.0.1
+
+ADD start.sh /home/admin
+ADD . /home/admin/app/src/app
+RUN chown -R admin:admin /home/admin
+USER admin
+WORKDIR /home/admin

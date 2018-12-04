@@ -1,0 +1,45 @@
+package ${doPackage};
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class ${className}${doSuffix} implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach($item in $list)
+    /**
+     * database column ${tableName}.${item.columnName}
+     */
+    private ${item.javaType} ${item.propName};
+
+#end
+#foreach($item in $list)
+#if (${item.javaType}=="Date")
+    public ${item.javaType} ${item.getMethod}() {
+        if(${item.propName} == null){
+            return null;
+        }
+        return (${item.javaType})${item.propName}.clone();
+    }
+
+    public void ${item.setMethod}(${item.javaType} ${item.propName}) {
+        if(${item.propName} == null){
+            this.${item.propName} = null;
+        }else{
+            this.${item.propName} = (${item.javaType})${item.propName}.clone();
+        }
+    }
+
+#else
+    public ${item.javaType} ${item.getMethod}() {
+        return ${item.propName};
+    }
+
+    public void ${item.setMethod}(${item.javaType} ${item.propName}) {
+        this.${item.propName} = ${item.propName};
+    }
+#end
+
+#end
+}

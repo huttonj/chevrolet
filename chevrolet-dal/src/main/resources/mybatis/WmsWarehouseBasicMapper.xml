@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.WmsWarehouseBasicMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.WmsWarehouseBasicDO">
+        <id column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="warehouse_no" jdbcType="VARCHAR" property="warehouseNo" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="internal_name" jdbcType="VARCHAR" property="internalName" />
+        <result column="region" jdbcType="BIGINT" property="region" />
+        <result column="prov_area_id" jdbcType="BIGINT" property="provAreaId" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="county_id" jdbcType="BIGINT" property="countyId" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="warehouse_status" jdbcType="INTEGER" property="warehouseStatus" />
+        <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+        <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+        <result column="memo" jdbcType="VARCHAR" property="memo" />
+        <result column="use_pda" jdbcType="TINYINT" property="usePda" />
+        <result column="use_position" jdbcType="TINYINT" property="usePosition" />
+        <result column="notice_rule" jdbcType="VARCHAR" property="noticeRule" />
+        <result column="is_schedule" jdbcType="TINYINT" property="isSchedule" />
+        <result column="monitoring" jdbcType="TINYINT" property="monitoring" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        warehouse_id,gmt_create,gmt_modified,warehouse_no,name,internal_name,region,prov_area_id,province_id,city_id,county_id,address,type,warehouse_status,latitude,longitude,memo,use_pda,use_position,notice_rule,is_schedule,monitoring,status
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsWarehouseBasicQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from wms_warehouse_basic
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from wms_warehouse_basic where warehouse_id = #{warehouseId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from wms_warehouse_basic where warehouse_id = #{warehouseId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.WmsWarehouseBasicDO">
+        <selectKey keyProperty="warehouseId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into wms_warehouse_basic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="warehouseNo != null">
+                warehouse_no,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="internalName != null">
+                internal_name,
+            </if>
+            <if test="region != null">
+                region,
+            </if>
+            <if test="provAreaId != null">
+                prov_area_id,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="countyId != null">
+                county_id,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="warehouseStatus != null">
+                warehouse_status,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="usePda != null">
+                use_pda,
+            </if>
+            <if test="usePosition != null">
+                use_position,
+            </if>
+            <if test="noticeRule != null">
+                notice_rule,
+            </if>
+            <if test="isSchedule != null">
+                is_schedule,
+            </if>
+            <if test="monitoring != null">
+                monitoring,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="warehouseNo != null">
+                #{warehouseNo,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="internalName != null">
+                #{internalName,jdbcType=VARCHAR},
+            </if>
+            <if test="region != null">
+                #{region,jdbcType=BIGINT},
+            </if>
+            <if test="provAreaId != null">
+                #{provAreaId,jdbcType=BIGINT},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="countyId != null">
+                #{countyId,jdbcType=BIGINT},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="warehouseStatus != null">
+                #{warehouseStatus,jdbcType=INTEGER},
+            </if>
+            <if test="latitude != null">
+                #{latitude,jdbcType=DECIMAL},
+            </if>
+            <if test="longitude != null">
+                #{longitude,jdbcType=DECIMAL},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="usePda != null">
+                #{usePda,jdbcType=TINYINT},
+            </if>
+            <if test="usePosition != null">
+                #{usePosition,jdbcType=TINYINT},
+            </if>
+            <if test="noticeRule != null">
+                #{noticeRule,jdbcType=VARCHAR},
+            </if>
+            <if test="isSchedule != null">
+                #{isSchedule,jdbcType=TINYINT},
+            </if>
+            <if test="monitoring != null">
+                #{monitoring,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List" keyProperty="warehouseId" useGeneratedKeys="true">
+        insert into wms_warehouse_basic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            warehouse_no,
+            name,
+            internal_name,
+            region,
+            prov_area_id,
+            province_id,
+            city_id,
+            county_id,
+            address,
+            type,
+            warehouse_status,
+            latitude,
+            longitude,
+            memo,
+            use_pda,
+            use_position,
+            notice_rule,
+            is_schedule,
+            monitoring,
+            status,
+            gmt_create,
+            gmt_modified
+        </trim>
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{item.warehouseNo,jdbcType=VARCHAR},
+            #{item.name,jdbcType=VARCHAR},
+            #{item.internalName,jdbcType=VARCHAR},
+            #{item.region,jdbcType=BIGINT},
+            #{item.provAreaId,jdbcType=BIGINT},
+            #{item.provinceId,jdbcType=BIGINT},
+            #{item.cityId,jdbcType=BIGINT},
+            #{item.countyId,jdbcType=BIGINT},
+            #{item.address,jdbcType=VARCHAR},
+            #{item.type,jdbcType=INTEGER},
+            #{item.warehouseStatus,jdbcType=INTEGER},
+            #{item.latitude,jdbcType=DECIMAL},
+            #{item.longitude,jdbcType=DECIMAL},
+            #{item.memo,jdbcType=VARCHAR},
+            #{item.usePda,jdbcType=TINYINT},
+            #{item.usePosition,jdbcType=TINYINT},
+            #{item.noticeRule,jdbcType=VARCHAR},
+            #{item.isSchedule,jdbcType=TINYINT},
+            #{item.monitoring,jdbcType=TINYINT},
+            #{item.status,jdbcType=TINYINT},
+            now(),
+            now()
+        </trim>
+        </foreach>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsWarehouseBasicQuery" resultType="java.lang.Integer">
+        select count(*) from wms_warehouse_basic
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.WmsWarehouseBasicDO">
+        update wms_warehouse_basic
+        <set>
+            gmt_modified=now(),
+            <if test="warehouseNo != null">
+                warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="internalName != null">
+                internal_name = #{internalName,jdbcType=VARCHAR},
+            </if>
+            <if test="region != null">
+                region = #{region,jdbcType=BIGINT},
+            </if>
+            <if test="provAreaId != null">
+                prov_area_id = #{provAreaId,jdbcType=BIGINT},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="countyId != null">
+                county_id = #{countyId,jdbcType=BIGINT},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="warehouseStatus != null">
+                warehouse_status = #{warehouseStatus,jdbcType=INTEGER},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude,jdbcType=DECIMAL},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude,jdbcType=DECIMAL},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="usePda != null">
+                use_pda = #{usePda,jdbcType=TINYINT},
+            </if>
+            <if test="usePosition != null">
+                use_position = #{usePosition,jdbcType=TINYINT},
+            </if>
+            <if test="noticeRule != null">
+                notice_rule = #{noticeRule,jdbcType=VARCHAR},
+            </if>
+            <if test="isSchedule != null">
+                is_schedule = #{isSchedule,jdbcType=TINYINT},
+            </if>
+            <if test="monitoring != null">
+                monitoring = #{monitoring,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where warehouse_id = #{warehouseId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

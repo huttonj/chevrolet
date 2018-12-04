@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.FactoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.FactoryDO">
+        <id column="factory_id" jdbcType="BIGINT" property="factoryId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="factory_name" jdbcType="VARCHAR" property="factoryName" />
+        <result column="factory_type" jdbcType="INTEGER" property="factoryType" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="outer_id" jdbcType="VARCHAR" property="outerId" />
+        <result column="source" jdbcType="INTEGER" property="source" />
+        <result column="standard" jdbcType="INTEGER" property="standard" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        factory_id,gmt_create,gmt_modified,factory_name,factory_type,status,outer_id,source,standard
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.FactoryQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from b2b_factory
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from b2b_factory where factory_id = #{factoryId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from b2b_factory where factory_id = #{factoryId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.FactoryDO">
+        <selectKey keyProperty="factoryId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into b2b_factory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="factoryName != null">
+                factory_name,
+            </if>
+            <if test="factoryType != null">
+                factory_type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="outerId != null">
+                outer_id,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+            <if test="standard != null">
+                standard,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="factoryName != null">
+                #{factoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="factoryType != null">
+                #{factoryType,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="outerId != null">
+                #{outerId,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=INTEGER},
+            </if>
+            <if test="standard != null">
+                #{standard,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.FactoryQuery" resultType="java.lang.Integer">
+        select count(*) from b2b_factory
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.FactoryDO">
+        update b2b_factory
+        <set>
+            gmt_modified=now(),
+            <if test="factoryName != null">
+                factory_name = #{factoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="factoryType != null">
+                factory_type = #{factoryType,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="outerId != null">
+                outer_id = #{outerId,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                source = #{source,jdbcType=INTEGER},
+            </if>
+            <if test="standard != null">
+                standard = #{standard,jdbcType=INTEGER},
+            </if>
+        </set>
+        where factory_id = #{factoryId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

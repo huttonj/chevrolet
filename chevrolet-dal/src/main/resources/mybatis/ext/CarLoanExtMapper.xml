@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.CarLoanExtMapper">
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="carLoanId">
+        INSERT INTO cc_car_loan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="list[0].carId != null">
+                car_id,
+            </if>
+            <if test="list[0].carLoanOrderNo != null">
+                car_loan_order_no,
+            </if>
+            <if test="list[0].splitOrderNo != null">
+                split_order_no,
+            </if>
+            <if test="list[0].carStatus != null">
+                car_status,
+            </if>
+            <if test="list[0].loanOrderType != null">
+                loan_order_type,
+            </if>
+            <if test="list[0].pricingAmountFirst != null">
+                pricing_amount_first,
+            </if>
+            <if test="list[0].singleLoamount != null">
+                single_loamount,
+            </if>
+            <if test="list[0].singleMaramount != null">
+                single_maramount,
+            </if>
+            <if test="list[0].warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="list[0].preWarehouseId != null">
+                pre_warehouse_id,
+            </if>
+            <if test="list[0].logisticsMode != null">
+                logistics_mode,
+            </if>
+            <if test="list[0].hotModel != null">
+                hot_model,
+            </if>
+            <if test="list[0].marketPrice != null">
+                market_price,
+            </if>
+            <if test="list[0].destProvinceId != null">
+                dest_province_id,
+            </if>
+            <if test="list[0].destProvinceName != null">
+                dest_province_name,
+            </if>
+            <if test="list[0].destCityId != null">
+                dest_city_id,
+            </if>
+            <if test="list[0].destCityName != null">
+                dest_city_name,
+            </if>
+            <if test="list[0].repayTime != null">
+                repay_time,
+            </if>
+            <if test="list[0].loanRate != null">
+                loan_rate,
+            </if>
+            <if test="list[0].imgFormality != null">
+                img_formality,
+            </if>
+            <if test="list[0].configure != null">
+                configure,
+            </if>
+            <if test="list[0].confirmVehicle != null">
+                confirm_vehicle,
+            </if>
+            <if test="list[0].retrofitting != null">
+                retrofitting,
+            </if>
+            <if test="list[0].tmsPaymentNo != null">
+                tms_payment_no,
+            </if>
+            <if test="list[0].wmsPaymentNo != null">
+                wms_payment_no,
+            </if>
+            <if test="list[0].unitContractPrice != null">
+                unit_contract_price,
+            </if>
+            <if test="list[0].currentOperatorId != null">
+                current_operator_id,
+            </if>
+            <if test="list[0].currentOperatorName != null">
+                current_operator_name,
+            </if>
+            <if test="list[0].marginRatio != null">
+                margin_ratio,
+            </if>
+            <if test="list[0].ruleCalculationBail != null">
+                rule_calculation_bail,
+            </if>
+            <if test="list[0].secondKillFlag != null">
+                second_kill_flag,
+            </if>
+            <if test="list[0].comment != null">
+                comment,
+            </if>
+            <if test="list[0].isWmsCarApply != null">
+                is_wms_car_apply,
+            </if>
+            <if test="list[0].isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="list[0].isBuyBack != null">
+                is_buy_back,
+            </if>
+            <if test="list[0].repurchaseTime != null">
+                repurchase_time,
+            </if>
+        </trim>
+        VALUES
+        <foreach collection="list" item="carLoanDO" index="index" separator="," >
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                now(),now(),
+                <if test="carLoanDO.carId != null">
+                    #{carLoanDO.carId,jdbcType=BIGINT},
+                </if>
+                <if test="carLoanDO.carLoanOrderNo != null">
+                    #{carLoanDO.carLoanOrderNo,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.splitOrderNo != null">
+                    #{carLoanDO.splitOrderNo,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.carStatus != null">
+                    #{carLoanDO.carStatus,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.loanOrderType != null">
+                    #{carLoanDO.loanOrderType,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.pricingAmountFirst != null">
+                    #{carLoanDO.pricingAmountFirst,jdbcType=BIGINT},
+                </if>
+                <if test="carLoanDO.singleLoamount != null">
+                    #{carLoanDO.singleLoamount,jdbcType=BIGINT},
+                </if>
+                <if test="carLoanDO.singleMaramount != null">
+                    #{carLoanDO.singleMaramount,jdbcType=BIGINT},
+                </if>
+                <if test="carLoanDO.warehouseId != null">
+                    #{carLoanDO.warehouseId,jdbcType=BIGINT},
+                </if>
+                <if test="carLoanDO.preWarehouseId != null">
+                    #{carLoanDO.preWarehouseId,jdbcType=BIGINT},
+                </if>
+                <if test="carLoanDO.logisticsMode != null">
+                    #{carLoanDO.logisticsMode,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.hotModel != null">
+                    #{carLoanDO.hotModel,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.marketPrice != null">
+                    #{carLoanDO.marketPrice,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.destProvinceId != null">
+                    #{carLoanDO.destProvinceId,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.destProvinceName != null">
+                    #{carLoanDO.destProvinceName,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.destCityId != null">
+                    #{carLoanDO.destCityId,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.destCityName != null">
+                    #{carLoanDO.destCityName,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.repayTime != null">
+                    #{carLoanDO.repayTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="carLoanDO.loanRate != null">
+                    #{carLoanDO.loanRate,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.imgFormality != null">
+                    #{carLoanDO.imgFormality,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.configure != null">
+                    #{carLoanDO.configure,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.confirmVehicle != null">
+                    #{carLoanDO.confirmVehicle,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.retrofitting != null">
+                    #{carLoanDO.retrofitting,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.tmsPaymentNo != null">
+                    #{carLoanDO.tmsPaymentNo,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.wmsPaymentNo != null">
+                    #{carLoanDO.wmsPaymentNo,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.unitContractPrice != null">
+                    #{carLoanDO.unitContractPrice,jdbcType=BIGINT},
+                </if>
+                <if test="carLoanDO.currentOperatorId != null">
+                    #{carLoanDO.currentOperatorId,jdbcType=BIGINT},
+                </if>
+                <if test="carLoanDO.currentOperatorName != null">
+                    #{carLoanDO.currentOperatorName,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.marginRatio != null">
+                    #{carLoanDO.marginRatio,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.ruleCalculationBail != null">
+                    #{carLoanDO.ruleCalculationBail,jdbcType=BIGINT},
+                </if>
+                <if test="carLoanDO.secondKillFlag != null">
+                    #{carLoanDO.secondKillFlag,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.comment != null">
+                    #{carLoanDO.comment,jdbcType=VARCHAR},
+                </if>
+                <if test="carLoanDO.isWmsCarApply != null">
+                    #{carLoanDO.isWmsCarApply,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.isDeleted != null">
+                    #{carLoanDO.isDeleted,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.isBuyBack != null">
+                    #{carLoanDO.isBuyBack,jdbcType=INTEGER},
+                </if>
+                <if test="carLoanDO.repurchaseTime != null">
+                    #{carLoanDO.repurchaseTime,jdbcType=TIMESTAMP},
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateByCarIdSelective" parameterType="com.chevrolet.dal.dao.domain.CarLoanDO">
+        update cc_car_loan
+        <set>
+            gmt_modified=now(),
+            <if test="carId != null">
+                car_id = #{carId,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanOrderNo != null">
+                car_loan_order_no = #{carLoanOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="splitOrderNo != null">
+                split_order_no = #{splitOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="carStatus != null">
+                car_status = #{carStatus,jdbcType=INTEGER},
+            </if>
+            <if test="loanOrderType != null">
+                loan_order_type = #{loanOrderType,jdbcType=INTEGER},
+            </if>
+            <if test="pricingAmountFirst != null">
+                pricing_amount_first = #{pricingAmountFirst,jdbcType=BIGINT},
+            </if>
+            <if test="singleLoamount != null">
+                single_loamount = #{singleLoamount,jdbcType=BIGINT},
+            </if>
+            <if test="singleMaramount != null">
+                single_maramount = #{singleMaramount,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="preWarehouseId != null">
+                pre_warehouse_id = #{preWarehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="logisticsMode != null">
+                logistics_mode = #{logisticsMode,jdbcType=INTEGER},
+            </if>
+            <if test="hotModel != null">
+                hot_model = #{hotModel,jdbcType=INTEGER},
+            </if>
+            <if test="marketPrice != null">
+                market_price = #{marketPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="destProvinceId != null">
+                dest_province_id = #{destProvinceId,jdbcType=INTEGER},
+            </if>
+            <if test="destProvinceName != null">
+                dest_province_name = #{destProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="destCityId != null">
+                dest_city_id = #{destCityId,jdbcType=INTEGER},
+            </if>
+            <if test="destCityName != null">
+                dest_city_name = #{destCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="repayTime != null">
+                repay_time = #{repayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loanRate != null">
+                loan_rate = #{loanRate,jdbcType=VARCHAR},
+            </if>
+            <if test="imgFormality != null">
+                img_formality = #{imgFormality,jdbcType=VARCHAR},
+            </if>
+            <if test="configure != null">
+                configure = #{configure,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmVehicle != null">
+                confirm_vehicle = #{confirmVehicle,jdbcType=INTEGER},
+            </if>
+            <if test="retrofitting != null">
+                retrofitting = #{retrofitting,jdbcType=INTEGER},
+            </if>
+            <if test="tmsPaymentNo != null">
+                tms_payment_no = #{tmsPaymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="wmsPaymentNo != null">
+                wms_payment_no = #{wmsPaymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="unitContractPrice != null">
+                unit_contract_price = #{unitContractPrice,jdbcType=BIGINT},
+            </if>
+            <if test="currentOperatorId != null">
+                current_operator_id = #{currentOperatorId,jdbcType=BIGINT},
+            </if>
+            <if test="currentOperatorName != null">
+                current_operator_name = #{currentOperatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="marginRatio != null">
+                margin_ratio = #{marginRatio,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleCalculationBail != null">
+                rule_calculation_bail = #{ruleCalculationBail,jdbcType=BIGINT},
+            </if>
+            <if test="secondKillFlag != null">
+                second_kill_flag = #{secondKillFlag,jdbcType=INTEGER},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="isWmsCarApply != null">
+                is_wms_car_apply = #{isWmsCarApply,jdbcType=INTEGER},
+            </if>
+            <if test="isBuyBack != null">
+                is_buy_back = #{isBuyBack,jdbcType=INTEGER},
+            </if>
+            <if test="repurchaseTime != null">
+                repurchase_time = #{repurchaseTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=INTEGER},
+            </if>
+        </set>
+        where car_id=#{carId,jdbcType=BIGINT}
+        and car_loan_order_no=#{carLoanOrderNo,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByCarLoanOrderNoSelective" parameterType="com.chevrolet.dal.dao.domain.CarLoanDO">
+        update cc_car_loan
+        <set>
+            gmt_modified=now(),
+            <if test="carId != null">
+                car_id = #{carId,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanOrderNo != null">
+                car_loan_order_no = #{carLoanOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="splitOrderNo != null">
+                split_order_no = #{splitOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="carStatus != null">
+                car_status = #{carStatus,jdbcType=INTEGER},
+            </if>
+            <if test="loanOrderType != null">
+                loan_order_type = #{loanOrderType,jdbcType=INTEGER},
+            </if>
+            <if test="pricingAmountFirst != null">
+                pricing_amount_first = #{pricingAmountFirst,jdbcType=BIGINT},
+            </if>
+            <if test="singleLoamount != null">
+                single_loamount = #{singleLoamount,jdbcType=BIGINT},
+            </if>
+            <if test="singleMaramount != null">
+                single_maramount = #{singleMaramount,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="preWarehouseId != null">
+                pre_warehouse_id = #{preWarehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="logisticsMode != null">
+                logistics_mode = #{logisticsMode,jdbcType=INTEGER},
+            </if>
+            <if test="hotModel != null">
+                hot_model = #{hotModel,jdbcType=INTEGER},
+            </if>
+            <if test="marketPrice != null">
+                market_price = #{marketPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="destProvinceId != null">
+                dest_province_id = #{destProvinceId,jdbcType=INTEGER},
+            </if>
+            <if test="destProvinceName != null">
+                dest_province_name = #{destProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="destCityId != null">
+                dest_city_id = #{destCityId,jdbcType=INTEGER},
+            </if>
+            <if test="destCityName != null">
+                dest_city_name = #{destCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="repayTime != null">
+                repay_time = #{repayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loanRate != null">
+                loan_rate = #{loanRate,jdbcType=VARCHAR},
+            </if>
+            <if test="imgFormality != null">
+                img_formality = #{imgFormality,jdbcType=VARCHAR},
+            </if>
+            <if test="configure != null">
+                configure = #{configure,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmVehicle != null">
+                confirm_vehicle = #{confirmVehicle,jdbcType=INTEGER},
+            </if>
+            <if test="retrofitting != null">
+                retrofitting = #{retrofitting,jdbcType=INTEGER},
+            </if>
+            <if test="tmsPaymentNo != null">
+                tms_payment_no = #{tmsPaymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="wmsPaymentNo != null">
+                wms_payment_no = #{wmsPaymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="unitContractPrice != null">
+                unit_contract_price = #{unitContractPrice,jdbcType=BIGINT},
+            </if>
+            <if test="currentOperatorId != null">
+                current_operator_id = #{currentOperatorId,jdbcType=BIGINT},
+            </if>
+            <if test="currentOperatorName != null">
+                current_operator_name = #{currentOperatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="marginRatio != null">
+                margin_ratio = #{marginRatio,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleCalculationBail != null">
+                rule_calculation_bail = #{ruleCalculationBail,jdbcType=BIGINT},
+            </if>
+            <if test="secondKillFlag != null">
+                second_kill_flag = #{secondKillFlag,jdbcType=INTEGER},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="isWmsCarApply != null">
+                is_wms_car_apply = #{isWmsCarApply,jdbcType=INTEGER},
+            </if>
+            <if test="isBuyBack != null">
+                is_buy_back = #{isBuyBack,jdbcType=INTEGER},
+            </if>
+            <if test="repurchaseTime != null">
+                repurchase_time = #{repurchaseTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=INTEGER},
+            </if>
+        </set>
+        where car_loan_order_no=#{carLoanOrderNo,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByCarIdAndOrderNoSelective" parameterType="com.chevrolet.dal.dao.domain.CarLoanDO">
+        update cc_car_loan
+        <set>
+            gmt_modified=now(),
+            <if test="carId != null">
+                car_id = #{carId,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanOrderNo != null">
+                car_loan_order_no = #{carLoanOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="splitOrderNo != null">
+                split_order_no = #{splitOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="carStatus != null">
+                car_status = #{carStatus,jdbcType=INTEGER},
+            </if>
+            <if test="loanOrderType != null">
+                loan_order_type = #{loanOrderType,jdbcType=INTEGER},
+            </if>
+            <if test="pricingAmountFirst != null">
+                pricing_amount_first = #{pricingAmountFirst,jdbcType=BIGINT},
+            </if>
+            <if test="singleLoamount != null">
+                single_loamount = #{singleLoamount,jdbcType=BIGINT},
+            </if>
+            <if test="singleMaramount != null">
+                single_maramount = #{singleMaramount,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="preWarehouseId != null">
+                pre_warehouse_id = #{preWarehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="logisticsMode != null">
+                logistics_mode = #{logisticsMode,jdbcType=INTEGER},
+            </if>
+            <if test="hotModel != null">
+                hot_model = #{hotModel,jdbcType=INTEGER},
+            </if>
+            <if test="marketPrice != null">
+                market_price = #{marketPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="destProvinceId != null">
+                dest_province_id = #{destProvinceId,jdbcType=INTEGER},
+            </if>
+            <if test="destProvinceName != null">
+                dest_province_name = #{destProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="destCityId != null">
+                dest_city_id = #{destCityId,jdbcType=INTEGER},
+            </if>
+            <if test="destCityName != null">
+                dest_city_name = #{destCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="repayTime != null">
+                repay_time = #{repayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loanRate != null">
+                loan_rate = #{loanRate,jdbcType=VARCHAR},
+            </if>
+            <if test="imgFormality != null">
+                img_formality = #{imgFormality,jdbcType=VARCHAR},
+            </if>
+            <if test="configure != null">
+                configure = #{configure,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmVehicle != null">
+                confirm_vehicle = #{confirmVehicle,jdbcType=INTEGER},
+            </if>
+            <if test="retrofitting != null">
+                retrofitting = #{retrofitting,jdbcType=INTEGER},
+            </if>
+            <if test="tmsPaymentNo != null">
+                tms_payment_no = #{tmsPaymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="wmsPaymentNo != null">
+                wms_payment_no = #{wmsPaymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="unitContractPrice != null">
+                unit_contract_price = #{unitContractPrice,jdbcType=BIGINT},
+            </if>
+            <if test="currentOperatorId != null">
+                current_operator_id = #{currentOperatorId,jdbcType=BIGINT},
+            </if>
+            <if test="currentOperatorName != null">
+                current_operator_name = #{currentOperatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="marginRatio != null">
+                margin_ratio = #{marginRatio,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleCalculationBail != null">
+                rule_calculation_bail = #{ruleCalculationBail,jdbcType=BIGINT},
+            </if>
+            <if test="secondKillFlag != null">
+                second_kill_flag = #{secondKillFlag,jdbcType=INTEGER},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="isWmsCarApply != null">
+                is_wms_car_apply = #{isWmsCarApply,jdbcType=INTEGER},
+            </if>
+            <if test="isBuyBack != null">
+                is_buy_back = #{isBuyBack,jdbcType=INTEGER},
+            </if>
+            <if test="repurchaseTime != null">
+                repurchase_time = #{repurchaseTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=INTEGER},
+            </if>
+        </set>
+        where car_loan_order_no=#{carLoanOrderNo,jdbcType=VARCHAR}
+        and car_id = #{carId,jdbcType=BIGINT}
+    </update>
+
+    <update id="batchUpdateByCarIds">
+        update cc_car_loan
+        <set>
+            gmt_modified=now(),
+            <if test="carLoanDO.carLoanOrderNo != null">
+                car_loan_order_no = #{carLoanDO.carLoanOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.splitOrderNo != null">
+                split_order_no = #{carLoanDO.splitOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.carStatus != null">
+                car_status = #{carLoanDO.carStatus,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.loanOrderType != null">
+                loan_order_type = #{carLoanDO.loanOrderType,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.pricingAmountFirst != null">
+                pricing_amount_first = #{carLoanDO.pricingAmountFirst,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanDO.singleLoamount != null">
+                single_loamount = #{carLoanDO.singleLoamount,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanDO.singleMaramount != null">
+                single_maramount = #{carLoanDO.singleMaramount,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanDO.warehouseId != null">
+                warehouse_id = #{carLoanDO.warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanDO.preWarehouseId != null">
+                pre_warehouse_id = #{carLoanDO.preWarehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanDO.logisticsMode != null">
+                logistics_mode = #{carLoanDO.logisticsMode,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.hotModel != null">
+                hot_model = #{carLoanDO.hotModel,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.marketPrice != null">
+                market_price = #{carLoanDO.marketPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.destProvinceId != null">
+                dest_province_id = #{carLoanDO.destProvinceId,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.destProvinceName != null">
+                dest_province_name = #{carLoanDO.destProvinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.destCityId != null">
+                dest_city_id = #{carLoanDO.destCityId,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.destCityName != null">
+                dest_city_name = #{carLoanDO.destCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.repayTime != null">
+                repay_time = #{carLoanDO.repayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="carLoanDO.loanRate != null">
+                loan_rate = #{carLoanDO.loanRate,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.imgFormality != null">
+                img_formality = #{carLoanDO.imgFormality,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.configure != null">
+                configure = #{carLoanDO.configure,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.confirmVehicle != null">
+                confirm_vehicle = #{carLoanDO.confirmVehicle,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.retrofitting != null">
+                retrofitting = #{carLoanDO.retrofitting,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.tmsPaymentNo != null">
+                tms_payment_no = #{carLoanDO.tmsPaymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.wmsPaymentNo != null">
+                wms_payment_no = #{carLoanDO.wmsPaymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.unitContractPrice != null">
+                unit_contract_price = #{carLoanDO.unitContractPrice,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanDO.currentOperatorId != null">
+                current_operator_id = #{carLoanDO.currentOperatorId,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanDO.currentOperatorName != null">
+                current_operator_name = #{carLoanDO.currentOperatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.marginRatio != null">
+                margin_ratio = #{carLoanDO.marginRatio,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.ruleCalculationBail != null">
+                rule_calculation_bail = #{carLoanDO.ruleCalculationBail,jdbcType=BIGINT},
+            </if>
+            <if test="carLoanDO.secondKillFlag != null">
+                second_kill_flag = #{carLoanDO.secondKillFlag,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.comment != null">
+                comment = #{carLoanDO.comment,jdbcType=VARCHAR},
+            </if>
+            <if test="carLoanDO.isWmsCarApply != null">
+                is_wms_car_apply = #{carLoanDO.isWmsCarApply,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.isBuyBack != null">
+                is_buy_back = #{carLoanDO.isBuyBack,jdbcType=INTEGER},
+            </if>
+            <if test="carLoanDO.repurchaseTime != null">
+                repurchase_time = #{carLoanDO.repurchaseTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="carLoanDO.isDeleted != null">
+                is_deleted = #{carLoanDO.isDeleted,jdbcType=INTEGER},
+            </if>
+        </set>
+        <where>
+            car_id in
+            <foreach collection="carIds" item="carId"  open="(" separator="," close=")">
+                #{carId,jdbcType=BIGINT}
+            </foreach>
+            and car_loan_order_no = #{carLoanDO.carLoanOrderNo,jdbcType=VARCHAR}
+        </where>
+    </update>
+
+    <sql id="carLoanNo">
+        carloan.car_loan_order_no
+    </sql>
+
+    <select id="getDistinctLoanOrderNo"  resultType="java.lang.String">
+        select
+        distinct
+        <include refid="carLoanNo" />
+        from cc_car_loan carloan left join cc_car ccar on carloan.car_id=ccar.car_id
+        where ccar.asset_right = -2
+    </select>
+
+    <select id="queryAllOnLoanOrderNos"  resultType="java.lang.String">
+        select
+        distinct(car_loan_order_no)
+        from cc_car_loan where car_status in (20,30,40)
+        and is_deleted = 0
+    </select>
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.CarAssetChglogExtMapper">
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="chglogId">
+        INSERT INTO cc_car_asset_chglog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="list[0].oid != null">
+                oid,
+            </if>
+            <if test="list[0].oType != null">
+                o_type,
+            </if>
+            <if test="list[0].nid != null">
+                nid,
+            </if>
+            <if test="list[0].nType != null">
+                n_type,
+            </if>
+            <if test="list[0].carId != null">
+                car_id,
+            </if>
+        </trim>
+        values
+        <foreach collection="list" item="carAssetChglogDO" index="index" separator="," >
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                now(),now(),
+                <if test="carAssetChglogDO.oid != null">
+                    #{carAssetChglogDO.oid,jdbcType=BIGINT},
+                </if>
+                <if test="carAssetChglogDO.oType != null">
+                    #{carAssetChglogDO.oType,jdbcType=INTEGER},
+                </if>
+                <if test="carAssetChglogDO.nid != null">
+                    #{carAssetChglogDO.nid,jdbcType=BIGINT},
+                </if>
+                <if test="carAssetChglogDO.nType != null">
+                    #{carAssetChglogDO.nType,jdbcType=INTEGER},
+                </if>
+                <if test="carAssetChglogDO.carId != null">
+                    #{carAssetChglogDO.carId,jdbcType=BIGINT},
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+
+</mapper>

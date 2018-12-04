@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.DaasSalesExtMapper">
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="daasSalesId">
+        INSERT INTO cc_daas_sales
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="list[0].manfId != null">
+                manf_id,
+            </if>
+            <if test="list[0].manfName != null">
+                manf_name,
+            </if>
+            <if test="list[0].brandId != null">
+                brand_id,
+            </if>
+            <if test="list[0].brandName != null">
+                brand_name,
+            </if>
+            <if test="list[0].subModelId != null">
+                sub_model_id,
+            </if>
+            <if test="list[0].subModelName != null">
+                sub_model_name,
+            </if>
+            <if test="list[0].segmentId != null">
+                segment_id,
+            </if>
+            <if test="list[0].segmentName != null">
+                segment_name,
+            </if>
+            <if test="list[0].sales != null">
+                sales,
+            </if>
+            <if test="list[0].dataYear != null">
+                data_year,
+            </if>
+            <if test="list[0].dataMonth != null">
+                data_month,
+            </if>
+            <if test="list[0].isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        VALUES
+        <foreach collection="list" item="daasSalesDO" index="index" separator="," >
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                now(),now(),
+                <if test="daasSalesDO.manfId != null">
+                    #{daasSalesDO.manfId,jdbcType=BIGINT},
+                </if>
+                <if test="daasSalesDO.manfName != null">
+                    #{daasSalesDO.manfName,jdbcType=VARCHAR},
+                </if>
+                <if test="daasSalesDO.brandId != null">
+                    #{daasSalesDO.brandId,jdbcType=BIGINT},
+                </if>
+                <if test="daasSalesDO.brandName != null">
+                    #{daasSalesDO.brandName,jdbcType=VARCHAR},
+                </if>
+                <if test="daasSalesDO.subModelId != null">
+                    #{daasSalesDO.subModelId,jdbcType=BIGINT},
+                </if>
+                <if test="daasSalesDO.subModelName != null">
+                    #{daasSalesDO.subModelName,jdbcType=VARCHAR},
+                </if>
+                <if test="daasSalesDO.segmentId != null">
+                    #{daasSalesDO.segmentId,jdbcType=BIGINT},
+                </if>
+                <if test="daasSalesDO.segmentName != null">
+                    #{daasSalesDO.segmentName,jdbcType=VARCHAR},
+                </if>
+                <if test="daasSalesDO.sales != null">
+                    #{daasSalesDO.sales,jdbcType=BIGINT},
+                </if>
+                <if test="daasSalesDO.dataYear != null">
+                    #{daasSalesDO.dataYear,jdbcType=INTEGER},
+                </if>
+                <if test="daasSalesDO.dataMonth != null">
+                    #{daasSalesDO.dataMonth,jdbcType=INTEGER},
+                </if>
+                <if test="daasSalesDO.isDeleted != null">
+                    #{daasSalesDO.isDeleted,jdbcType=INTEGER},
+                </if>
+            </trim>
+        </foreach>
+    </insert>
+
+    <sql id="truncateData">
+        truncate table cc_daas_sales
+    </sql>
+
+</mapper>

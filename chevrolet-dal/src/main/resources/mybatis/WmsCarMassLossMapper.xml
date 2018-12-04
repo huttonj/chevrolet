@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.WmsCarMassLossMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.WmsCarMassLossDO">
+        <id column="mass_loss_id" jdbcType="BIGINT" property="massLossId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="wms_car_id" jdbcType="BIGINT" property="wmsCarId" />
+        <result column="type" jdbcType="TINYINT" property="type" />
+        <result column="img_mass_loss" jdbcType="VARCHAR" property="imgMassLoss" />
+        <result column="transactor_id" jdbcType="BIGINT" property="transactorId" />
+        <result column="transactor_name" jdbcType="VARCHAR" property="transactorName" />
+        <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        mass_loss_id,gmt_create,gmt_modified,wms_car_id,type,img_mass_loss,transactor_id,transactor_name,remarks,status
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsCarMassLossQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from wms_car_mass_loss
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from wms_car_mass_loss where mass_loss_id = #{massLossId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from wms_car_mass_loss where mass_loss_id = #{massLossId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.WmsCarMassLossDO">
+        <selectKey keyProperty="massLossId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into wms_car_mass_loss
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="wmsCarId != null">
+                wms_car_id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="imgMassLoss != null">
+                img_mass_loss,
+            </if>
+            <if test="transactorId != null">
+                transactor_id,
+            </if>
+            <if test="transactorName != null">
+                transactor_name,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="wmsCarId != null">
+                #{wmsCarId,jdbcType=BIGINT},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="imgMassLoss != null">
+                #{imgMassLoss,jdbcType=VARCHAR},
+            </if>
+            <if test="transactorId != null">
+                #{transactorId,jdbcType=BIGINT},
+            </if>
+            <if test="transactorName != null">
+                #{transactorName,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsCarMassLossQuery" resultType="java.lang.Integer">
+        select count(*) from wms_car_mass_loss
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.WmsCarMassLossDO">
+        update wms_car_mass_loss
+        <set>
+            gmt_modified=now(),
+            <if test="wmsCarId != null">
+                wms_car_id = #{wmsCarId,jdbcType=BIGINT},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="imgMassLoss != null">
+                img_mass_loss = #{imgMassLoss,jdbcType=VARCHAR},
+            </if>
+            <if test="transactorId != null">
+                transactor_id = #{transactorId,jdbcType=BIGINT},
+            </if>
+            <if test="transactorName != null">
+                transactor_name = #{transactorName,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where mass_loss_id = #{massLossId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

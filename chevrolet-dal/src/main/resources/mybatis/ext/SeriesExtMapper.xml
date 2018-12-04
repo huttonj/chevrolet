@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.SeriesExtMapper">
+
+    <resultMap id="BaseExtResultMap" type="com.chevrolet.dal.dao.domain.SeriesDO">
+        <id column="series_id" jdbcType="BIGINT" property="seriesId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="series_name" jdbcType="VARCHAR" property="seriesName" />
+        <result column="factory_id" jdbcType="BIGINT" property="factoryId" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="level" jdbcType="VARCHAR" property="level" />
+        <result column="price_range" jdbcType="VARCHAR" property="priceRange" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="outer_id" jdbcType="VARCHAR" property="outerId" />
+        <result column="source" jdbcType="INTEGER" property="source" />
+        <result column="standard" jdbcType="INTEGER" property="standard" />
+        <result column="rank" jdbcType="INTEGER" property="rank" />
+        <result column="cars_number" jdbcType="BIGINT" property="carsNumber" />
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        series_id,gmt_create,gmt_modified,series_name,factory_id,brand_id,level,price_range,status,outer_id,source,standard,rank,cars_number
+    </sql>
+
+    <select id="getSeriesListByBrandAndChinaStandard" resultMap="BaseExtResultMap">
+        select
+        <include refid="Base_Column_List_Ext" />
+        from b2b_series
+        where brand_id=#{brandId,jdbcType=BIGINT}
+        <![CDATA[
+            and (standard & 1 or standard & 2)
+        ]]>
+        <if test=" status != null ">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        order by rank desc
+    </select>
+
+
+    <select id="getSeriesListByBrandAndStandard" resultMap="BaseExtResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List_Ext" />
+        from b2b_series
+        where brand_id=#{brandId,jdbcType=BIGINT}
+        <![CDATA[
+             and standard & #{standard,jdbcType=INTEGER}
+          ]]>
+        <if test=" status != null ">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        order by rank desc
+    </select>
+
+    <select id="listVaild" parameterType="java.util.Map" resultMap="BaseExtResultMap">
+        SELECT
+        <include refid="Base_Column_List_Ext" />
+        FROM b2b_series
+        WHERE series_id IN (
+        SELECT series_id FROM b2b_car
+        WHERE is_deleted = 0
+        <if test=" partnerId != null ">
+            AND (seller_id = #{partnerId,jdbcType=BIGINT} OR (creator = #{userId,jdbcType=BIGINT} and seller_id = -1))
+        </if>
+        <if test=" brandId != null ">
+            AND brand_id = #{brandId,jdbcType=BIGINT}
+        </if>
+        <choose>
+            <when test="status != null and status == 0">
+                AND status in (0,2,3)
+            </when>
+            <when test="status != null and status == 1">
+                AND status = 1
+            </when>
+        </choose>
+        <if test=" userId != null ">
+            AND creator = #{userId,jdbcType=BIGINT}
+        </if>
+        ) ORDER BY factory_id ASC, rank DESC
+    </select>
+
+    <select id="listVaildForAdmin" parameterType="java.util.Map" resultMap="BaseExtResultMap">
+        SELECT
+        <include refid="Base_Column_List_Ext" />
+        FROM b2b_series
+        WHERE series_id IN (
+        SELECT series_id FROM b2b_car
+        WHERE is_deleted = 0
+        <if test=" partnerId != null ">
+            AND (seller_id = #{partnerId} OR (creator = #{creator} and seller_id = -1))
+        </if>
+        <if test=" brandId != null ">
+            AND brand_id = #{brandId}
+        </if>
+        <choose>
+            <when test="status != null and status == 0">
+                AND status in (0,2,3)
+            </when>
+            <when test="status != null and status == 1">
+                AND status = 1
+            </when>
+        </choose>)
+        ORDER BY factory_id ASC, rank DESC
+    </select>
+
+</mapper>

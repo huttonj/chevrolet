@@ -1,0 +1,32 @@
+debug: true
+chevrolet:
+  version: 1.0_local_maihe
+spring:
+  application:
+      name: chevrolet
+      type: dubbo
+  # Dubbo
+  dubbo:
+      application:
+        name: chevrolet
+        owner: pufang
+        organization: mhc
+      registry:
+        address: zookeeper://172.21.10.42:2181?backup=172.21.10.43:2181
+      protocol:
+        name: dubbo
+        port: 20880
+      consumer:
+        version: 1.0_local_maihe
+        timeout: 15000
+        retries: 0
+        check: false
+  sleuth:
+      sampler:
+        percentage: 10
+  zipkin:
+    base-url: http://zk.haimaiche.net:9411
+
+
+
+

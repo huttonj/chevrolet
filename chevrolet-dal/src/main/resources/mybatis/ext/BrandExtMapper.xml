@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.BrandExtMapper">
+
+    <resultMap id="BaseResultMapExt" type="com.chevrolet.dal.dao.domain.BrandDO">
+        <id column="brand_id" jdbcType="BIGINT" property="brandId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName"/>
+        <result column="brand_letter" jdbcType="VARCHAR" property="brandLetter"/>
+        <result column="brand_pic" jdbcType="VARCHAR" property="brandPic"/>
+        <result column="small_pic" jdbcType="VARCHAR" property="smallPic"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="brand_type" jdbcType="INTEGER" property="brandType"/>
+        <result column="outer_id" jdbcType="VARCHAR" property="outerId"/>
+        <result column="source" jdbcType="INTEGER" property="source"/>
+        <result column="rank" jdbcType="INTEGER" property="rank" />
+        <result column="cars_number" jdbcType="BIGINT" property="carsNumber" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        brand_id,gmt_create,gmt_modified,brand_name,brand_letter,brand_pic,small_pic,status,brand_type,outer_id,source,rank,cars_number
+    </sql>
+
+    <select id="getBrandListByStandard" parameterType="java.lang.Integer" resultMap="BaseResultMapExt">
+        select
+        <include refid="Base_Column_List" />
+        from b2b_brand
+        <![CDATA[ where brand_type & #{standard} ]]>
+        order by brand_letter asc, rank desc
+    </select>
+
+    <select id="getBrandListByChinaStandard" resultMap="BaseResultMapExt">
+        select
+        <include refid="Base_Column_List" />
+        from b2b_brand
+        <![CDATA[
+        where (brand_type & 1 or brand_type & 2)
+        ]]>
+        order by brand_letter asc, rank desc
+    </select>
+
+    <select id="getRecentBrandIds" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT brand_id FROM b2b_car
+        WHERE seller_id = #{partnerId}
+        <if test="standard == 0">
+            AND spec = 0
+        </if>
+        <if test="standard == 1">
+            AND (spec = 0 OR spec = 1)
+        </if>
+        <if test="standard == 2">
+            AND spec = 2
+        </if>
+        <if test="standard == 3">
+            AND spec = 3
+        </if>
+        <if test="standard == 4">
+            AND spec = 4
+        </if>
+        <if test="standard == 5">
+            AND spec = 5
+        </if>
+        <if test="standard == 6">
+            AND spec = 6
+        </if>
+        ORDER BY gmt_create DESC
+    </select>
+
+    <select id="listVaildForAdmin" parameterType="java.util.Map" resultMap="BaseResultMapExt">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM b2b_brand
+        WHERE brand_id IN (
+        SELECT DISTINCT brand_id FROM b2b_car
+        WHERE is_deleted = 0
+        AND (seller_id =#{partnerId} OR (creator = #{creator} and seller_id = -1))
+        <choose>
+            <when test="status != null and status == 0">
+                AND status in (0,2,3)
+            </when>
+            <when test="status != null and status == 1">
+                AND status = 1
+            </when>
+        </choose>
+        ) ORDER BY brand_letter ASC,rank DESC
+    </select>
+
+    <select id="listVaildForUser" parameterType="java.util.Map" resultMap="BaseResultMapExt">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM b2b_brand
+        WHERE brand_id IN (
+        SELECT DISTINCT brand_id FROM b2b_car
+        WHERE is_deleted = 0
+        <if test=" partnerId != null ">
+            AND (seller_id =#{partnerId}
+            OR (creator = #{userId} and seller_id = -1))
+        </if>
+        <choose>
+            <when test="status != null and status == 0">
+                AND status in (0,2,3)
+            </when>
+            <when test="status != null and status == 1">
+                AND status = 1
+            </when>
+        </choose>
+        <if test=" userId != null">
+            AND ( creator = #{userId}
+            <if test="brandIds != null">
+                OR brand_id IN
+                <foreach item="item" index="index" collection="brandIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
+        </if>
+        ) ORDER BY brand_letter ASC,rank DESC
+    </select>
+
+    <select id="getBrandListWithSeries" resultMap="BaseResultMapExt">
+        select
+        <include refid="Base_Column_List" />
+        from b2b_brand
+        where brand_id in (
+        select distinct brand_id from b2b_series
+        <where>
+            <choose>
+                <when test="standard == 2 ">
+                    <![CDATA[ (standard & 1 or standard & 2) ]]>
+                </when>
+                <otherwise>
+                    <![CDATA[ (standard & #{standard} ) ]]>
+                </otherwise>
+            </choose>
+        </where>
+        ) order by brand_letter asc, rank desc
+    </select>
+
+</mapper>

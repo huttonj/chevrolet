@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.DaasOnlinePriceMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.DaasOnlinePriceDO">
+        <id column="daas_online_price_id" jdbcType="BIGINT" property="daasOnlinePriceId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="version_id" jdbcType="BIGINT" property="versionId" />
+        <result column="version_full_name" jdbcType="VARCHAR" property="versionFullName" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+        <result column="sub_model_id" jdbcType="BIGINT" property="subModelId" />
+        <result column="sub_model_name" jdbcType="VARCHAR" property="subModelName" />
+        <result column="manf_id" jdbcType="BIGINT" property="manfId" />
+        <result column="manf_name" jdbcType="VARCHAR" property="manfName" />
+        <result column="engine_type_id" jdbcType="BIGINT" property="engineTypeId" />
+        <result column="engine_type_name" jdbcType="VARCHAR" property="engineTypeName" />
+        <result column="tran_type_id" jdbcType="BIGINT" property="tranTypeId" />
+        <result column="tran_type_name" jdbcType="VARCHAR" property="tranTypeName" />
+        <result column="model_year" jdbcType="VARCHAR" property="modelYear" />
+        <result column="province_id" jdbcType="BIGINT" property="provinceId" />
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+        <result column="city_id" jdbcType="BIGINT" property="cityId" />
+        <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+        <result column="msrp" jdbcType="VARCHAR" property="msrp" />
+        <result column="sale_price" jdbcType="VARCHAR" property="salePrice" />
+        <result column="data_year" jdbcType="INTEGER" property="dataYear" />
+        <result column="data_month" jdbcType="INTEGER" property="dataMonth" />
+        <result column="data_week" jdbcType="INTEGER" property="dataWeek" />
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        daas_online_price_id,gmt_create,gmt_modified,version_id,version_full_name,brand_id,brand_name,sub_model_id,sub_model_name,manf_id,manf_name,engine_type_id,engine_type_name,tran_type_id,tran_type_name,model_year,province_id,province_name,city_id,city_name,msrp,sale_price,data_year,data_month,data_week,is_deleted
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.DaasOnlinePriceQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from cc_daas_online_price
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from cc_daas_online_price where daas_online_price_id = #{daasOnlinePriceId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from cc_daas_online_price where daas_online_price_id = #{daasOnlinePriceId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.DaasOnlinePriceDO">
+        <selectKey keyProperty="daasOnlinePriceId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into cc_daas_online_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="versionId != null">
+                version_id,
+            </if>
+            <if test="versionFullName != null">
+                version_full_name,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="brandName != null">
+                brand_name,
+            </if>
+            <if test="subModelId != null">
+                sub_model_id,
+            </if>
+            <if test="subModelName != null">
+                sub_model_name,
+            </if>
+            <if test="manfId != null">
+                manf_id,
+            </if>
+            <if test="manfName != null">
+                manf_name,
+            </if>
+            <if test="engineTypeId != null">
+                engine_type_id,
+            </if>
+            <if test="engineTypeName != null">
+                engine_type_name,
+            </if>
+            <if test="tranTypeId != null">
+                tran_type_id,
+            </if>
+            <if test="tranTypeName != null">
+                tran_type_name,
+            </if>
+            <if test="modelYear != null">
+                model_year,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="provinceName != null">
+                province_name,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="cityName != null">
+                city_name,
+            </if>
+            <if test="msrp != null">
+                msrp,
+            </if>
+            <if test="salePrice != null">
+                sale_price,
+            </if>
+            <if test="dataYear != null">
+                data_year,
+            </if>
+            <if test="dataMonth != null">
+                data_month,
+            </if>
+            <if test="dataWeek != null">
+                data_week,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="versionId != null">
+                #{versionId,jdbcType=BIGINT},
+            </if>
+            <if test="versionFullName != null">
+                #{versionFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="brandName != null">
+                #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="subModelId != null">
+                #{subModelId,jdbcType=BIGINT},
+            </if>
+            <if test="subModelName != null">
+                #{subModelName,jdbcType=VARCHAR},
+            </if>
+            <if test="manfId != null">
+                #{manfId,jdbcType=BIGINT},
+            </if>
+            <if test="manfName != null">
+                #{manfName,jdbcType=VARCHAR},
+            </if>
+            <if test="engineTypeId != null">
+                #{engineTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="engineTypeName != null">
+                #{engineTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="tranTypeId != null">
+                #{tranTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="tranTypeName != null">
+                #{tranTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="modelYear != null">
+                #{modelYear,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="provinceName != null">
+                #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="cityName != null">
+                #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="msrp != null">
+                #{msrp,jdbcType=VARCHAR},
+            </if>
+            <if test="salePrice != null">
+                #{salePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="dataYear != null">
+                #{dataYear,jdbcType=INTEGER},
+            </if>
+            <if test="dataMonth != null">
+                #{dataMonth,jdbcType=INTEGER},
+            </if>
+            <if test="dataWeek != null">
+                #{dataWeek,jdbcType=INTEGER},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.DaasOnlinePriceQuery" resultType="java.lang.Integer">
+        select count(*) from cc_daas_online_price
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.DaasOnlinePriceDO">
+        update cc_daas_online_price
+        <set>
+            gmt_modified=now(),
+            <if test="versionId != null">
+                version_id = #{versionId,jdbcType=BIGINT},
+            </if>
+            <if test="versionFullName != null">
+                version_full_name = #{versionFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="brandName != null">
+                brand_name = #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="subModelId != null">
+                sub_model_id = #{subModelId,jdbcType=BIGINT},
+            </if>
+            <if test="subModelName != null">
+                sub_model_name = #{subModelName,jdbcType=VARCHAR},
+            </if>
+            <if test="manfId != null">
+                manf_id = #{manfId,jdbcType=BIGINT},
+            </if>
+            <if test="manfName != null">
+                manf_name = #{manfName,jdbcType=VARCHAR},
+            </if>
+            <if test="engineTypeId != null">
+                engine_type_id = #{engineTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="engineTypeName != null">
+                engine_type_name = #{engineTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="tranTypeId != null">
+                tran_type_id = #{tranTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="tranTypeName != null">
+                tran_type_name = #{tranTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="modelYear != null">
+                model_year = #{modelYear,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=BIGINT},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=BIGINT},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="msrp != null">
+                msrp = #{msrp,jdbcType=VARCHAR},
+            </if>
+            <if test="salePrice != null">
+                sale_price = #{salePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="dataYear != null">
+                data_year = #{dataYear,jdbcType=INTEGER},
+            </if>
+            <if test="dataMonth != null">
+                data_month = #{dataMonth,jdbcType=INTEGER},
+            </if>
+            <if test="dataWeek != null">
+                data_week = #{dataWeek,jdbcType=INTEGER},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=INTEGER},
+            </if>
+        </set>
+        where daas_online_price_id = #{daasOnlinePriceId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

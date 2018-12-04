@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.SeriesImageMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.SeriesImageDO">
+        <id column="color_id" jdbcType="BIGINT" property="colorId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="series_id" jdbcType="BIGINT" property="seriesId" />
+        <result column="color" jdbcType="VARCHAR" property="color" />
+        <result column="color_url" jdbcType="VARCHAR" property="colorUrl" />
+        <result column="car_url" jdbcType="VARCHAR" property="carUrl" />
+        <result column="car_url_original" jdbcType="VARCHAR" property="carUrlOriginal" />
+        <result column="detail_url" jdbcType="VARCHAR" property="detailUrl" />
+        <result column="detail_url_original" jdbcType="VARCHAR" property="detailUrlOriginal" />
+        <result column="center_url" jdbcType="VARCHAR" property="centerUrl" />
+        <result column="type" jdbcType="TINYINT" property="type" />
+        <result column="standard" jdbcType="VARCHAR" property="standard" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        color_id,gmt_create,gmt_modified,series_id,color,color_url,car_url,car_url_original,detail_url,detail_url_original,center_url,type,standard,status
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.SeriesImageQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from b2b_series_image
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from b2b_series_image where color_id = #{colorId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from b2b_series_image where color_id = #{colorId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.SeriesImageDO">
+        <selectKey keyProperty="colorId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into b2b_series_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="seriesId != null">
+                series_id,
+            </if>
+            <if test="color != null">
+                color,
+            </if>
+            <if test="colorUrl != null">
+                color_url,
+            </if>
+            <if test="carUrl != null">
+                car_url,
+            </if>
+            <if test="carUrlOriginal != null">
+                car_url_original,
+            </if>
+            <if test="detailUrl != null">
+                detail_url,
+            </if>
+            <if test="detailUrlOriginal != null">
+                detail_url_original,
+            </if>
+            <if test="centerUrl != null">
+                center_url,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="standard != null">
+                standard,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="seriesId != null">
+                #{seriesId,jdbcType=BIGINT},
+            </if>
+            <if test="color != null">
+                #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="colorUrl != null">
+                #{colorUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="carUrl != null">
+                #{carUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="carUrlOriginal != null">
+                #{carUrlOriginal,jdbcType=VARCHAR},
+            </if>
+            <if test="detailUrl != null">
+                #{detailUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="detailUrlOriginal != null">
+                #{detailUrlOriginal,jdbcType=VARCHAR},
+            </if>
+            <if test="centerUrl != null">
+                #{centerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="standard != null">
+                #{standard,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List" keyProperty="colorId" useGeneratedKeys="true">
+        insert into b2b_series_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            series_id,
+            color,
+            color_url,
+            car_url,
+            car_url_original,
+            detail_url,
+            detail_url_original,
+            center_url,
+            type,
+            standard,
+            status,
+            gmt_create,
+            gmt_modified
+        </trim>
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{item.seriesId,jdbcType=BIGINT},
+            #{item.color,jdbcType=VARCHAR},
+            #{item.colorUrl,jdbcType=VARCHAR},
+            #{item.carUrl,jdbcType=VARCHAR},
+            #{item.carUrlOriginal,jdbcType=VARCHAR},
+            #{item.detailUrl,jdbcType=VARCHAR},
+            #{item.detailUrlOriginal,jdbcType=VARCHAR},
+            #{item.centerUrl,jdbcType=VARCHAR},
+            #{item.type,jdbcType=TINYINT},
+            #{item.standard,jdbcType=VARCHAR},
+            #{item.status,jdbcType=TINYINT},
+            now(),
+            now()
+        </trim>
+        </foreach>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.SeriesImageQuery" resultType="java.lang.Integer">
+        select count(*) from b2b_series_image
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.SeriesImageDO">
+        update b2b_series_image
+        <set>
+            gmt_modified=now(),
+            <if test="seriesId != null">
+                series_id = #{seriesId,jdbcType=BIGINT},
+            </if>
+            <if test="color != null">
+                color = #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="colorUrl != null">
+                color_url = #{colorUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="carUrl != null">
+                car_url = #{carUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="carUrlOriginal != null">
+                car_url_original = #{carUrlOriginal,jdbcType=VARCHAR},
+            </if>
+            <if test="detailUrl != null">
+                detail_url = #{detailUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="detailUrlOriginal != null">
+                detail_url_original = #{detailUrlOriginal,jdbcType=VARCHAR},
+            </if>
+            <if test="centerUrl != null">
+                center_url = #{centerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="standard != null">
+                standard = #{standard,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where color_id = #{colorId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

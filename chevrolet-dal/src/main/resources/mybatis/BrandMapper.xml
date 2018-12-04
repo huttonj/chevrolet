@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.BrandMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.BrandDO">
+        <id column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+        <result column="brand_letter" jdbcType="VARCHAR" property="brandLetter" />
+        <result column="brand_pic" jdbcType="VARCHAR" property="brandPic" />
+        <result column="small_pic" jdbcType="VARCHAR" property="smallPic" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="brand_type" jdbcType="INTEGER" property="brandType" />
+        <result column="outer_id" jdbcType="VARCHAR" property="outerId" />
+        <result column="source" jdbcType="INTEGER" property="source" />
+        <result column="rank" jdbcType="INTEGER" property="rank" />
+        <result column="cars_number" jdbcType="BIGINT" property="carsNumber" />
+        <result column="priority" jdbcType="INTEGER" property="priority" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        brand_id,gmt_create,gmt_modified,brand_name,brand_letter,brand_pic,small_pic,status,brand_type,outer_id,source,rank,cars_number,priority
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.BrandQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from b2b_brand
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from b2b_brand where brand_id = #{brandId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from b2b_brand where brand_id = #{brandId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.BrandDO">
+        <selectKey keyProperty="brandId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into b2b_brand
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="brandName != null">
+                brand_name,
+            </if>
+            <if test="brandLetter != null">
+                brand_letter,
+            </if>
+            <if test="brandPic != null">
+                brand_pic,
+            </if>
+            <if test="smallPic != null">
+                small_pic,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="brandType != null">
+                brand_type,
+            </if>
+            <if test="outerId != null">
+                outer_id,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+            <if test="rank != null">
+                rank,
+            </if>
+            <if test="carsNumber != null">
+                cars_number,
+            </if>
+            <if test="priority != null">
+                priority,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="brandName != null">
+                #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandLetter != null">
+                #{brandLetter,jdbcType=VARCHAR},
+            </if>
+            <if test="brandPic != null">
+                #{brandPic,jdbcType=VARCHAR},
+            </if>
+            <if test="smallPic != null">
+                #{smallPic,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="brandType != null">
+                #{brandType,jdbcType=INTEGER},
+            </if>
+            <if test="outerId != null">
+                #{outerId,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=INTEGER},
+            </if>
+            <if test="rank != null">
+                #{rank,jdbcType=INTEGER},
+            </if>
+            <if test="carsNumber != null">
+                #{carsNumber,jdbcType=BIGINT},
+            </if>
+            <if test="priority != null">
+                #{priority,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.BrandQuery" resultType="java.lang.Integer">
+        select count(*) from b2b_brand
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.BrandDO">
+        update b2b_brand
+        <set>
+            gmt_modified=now(),
+            <if test="brandName != null">
+                brand_name = #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandLetter != null">
+                brand_letter = #{brandLetter,jdbcType=VARCHAR},
+            </if>
+            <if test="brandPic != null">
+                brand_pic = #{brandPic,jdbcType=VARCHAR},
+            </if>
+            <if test="smallPic != null">
+                small_pic = #{smallPic,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="brandType != null">
+                brand_type = #{brandType,jdbcType=INTEGER},
+            </if>
+            <if test="outerId != null">
+                outer_id = #{outerId,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                source = #{source,jdbcType=INTEGER},
+            </if>
+            <if test="rank != null">
+                rank = #{rank,jdbcType=INTEGER},
+            </if>
+            <if test="carsNumber != null">
+                cars_number = #{carsNumber,jdbcType=BIGINT},
+            </if>
+            <if test="priority != null">
+                priority = #{priority,jdbcType=INTEGER},
+            </if>
+        </set>
+        where brand_id = #{brandId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

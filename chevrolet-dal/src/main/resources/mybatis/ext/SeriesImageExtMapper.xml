@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.SeriesImageExtMapper">
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.SeriesImageDO">
+        <id column="color_id" jdbcType="BIGINT" property="colorId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="series_id" jdbcType="BIGINT" property="seriesId"/>
+        <result column="color" jdbcType="VARCHAR" property="color"/>
+        <result column="color_url" jdbcType="VARCHAR" property="colorUrl"/>
+        <result column="car_url" jdbcType="VARCHAR" property="carUrl"/>
+        <result column="car_url_original" jdbcType="VARCHAR" property="carUrlOriginal"/>
+        <result column="detail_url" jdbcType="VARCHAR" property="detailUrl"/>
+        <result column="detail_url_original" jdbcType="VARCHAR" property="detailUrlOriginal"/>
+        <result column="center_url" jdbcType="VARCHAR" property="centerUrl"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="standard" jdbcType="VARCHAR" property="standard"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        color_id,gmt_create,gmt_modified,series_id,color,color_url,car_url,car_url_original,detail_url,detail_url_original,center_url,type,standard,status
+    </sql>
+
+    <select id="list" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from b2b_series_image
+        where series_id = #{seriesId}
+        and type = #{type}
+        <if test="standard == 0">
+            and instr(standard, 0) &gt; 0
+        </if>
+        <if test="standard == 1">
+            and ( instr(standard, 0) &gt; 0 OR instr(standard, 1) &gt; 0 )
+        </if>
+        <if test="standard == 2">
+            and instr(standard, 2) &gt; 0
+        </if>
+        <if test="standard == 3">
+            and instr(standard, 3) &gt; 0
+        </if>
+        <if test="standard == 4">
+            and instr(standard, 4) &gt; 0
+        </if>
+        <if test="standard == 5">
+            and instr(standard, 5) &gt; 0
+        </if>
+        <if test="standard == 6">
+            and instr(standard, 6) &gt; 0
+        </if>
+    </select>
+</mapper>

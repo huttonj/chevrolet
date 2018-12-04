@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.WmsWarehouseEntryNoticeMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.WmsWarehouseEntryNoticeDO">
+        <id column="notice_id" jdbcType="BIGINT" property="noticeId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="notice_no" jdbcType="VARCHAR" property="noticeNo" />
+        <result column="order_id" jdbcType="BIGINT" property="orderId" />
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="source_type" jdbcType="TINYINT" property="sourceType" />
+        <result column="storage_type_id" jdbcType="BIGINT" property="storageTypeId" />
+        <result column="transactor_id" jdbcType="BIGINT" property="transactorId" />
+        <result column="transactor_name" jdbcType="VARCHAR" property="transactorName" />
+        <result column="customer_id" jdbcType="BIGINT" property="customerId" />
+        <result column="customer" jdbcType="VARCHAR" property="customer" />
+        <result column="contact_id" jdbcType="BIGINT" property="contactId" />
+        <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+        <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
+        <result column="salesman" jdbcType="VARCHAR" property="salesman" />
+        <result column="salesman_phone" jdbcType="VARCHAR" property="salesmanPhone" />
+        <result column="transport_order_no" jdbcType="VARCHAR" property="transportOrderNo" />
+        <result column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+        <result column="warehouse_fullname" jdbcType="VARCHAR" property="warehouseFullname" />
+        <result column="expected_warehousing_time" jdbcType="TIMESTAMP" property="expectedWarehousingTime" />
+        <result column="memo" jdbcType="VARCHAR" property="memo" />
+        <result column="review_time" jdbcType="TIMESTAMP" property="reviewTime" />
+        <result column="notice_status" jdbcType="TINYINT" property="noticeStatus" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        notice_id,gmt_create,gmt_modified,notice_no,order_id,order_no,source_type,storage_type_id,transactor_id,transactor_name,customer_id,customer,contact_id,contact_name,contact_phone,salesman,salesman_phone,transport_order_no,warehouse_id,warehouse_fullname,expected_warehousing_time,memo,review_time,notice_status,status
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsWarehouseEntryNoticeQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from wms_warehouse_entry_notice
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from wms_warehouse_entry_notice where notice_id = #{noticeId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from wms_warehouse_entry_notice where notice_id = #{noticeId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.WmsWarehouseEntryNoticeDO">
+        <selectKey keyProperty="noticeId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into wms_warehouse_entry_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="noticeNo != null">
+                notice_no,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="sourceType != null">
+                source_type,
+            </if>
+            <if test="storageTypeId != null">
+                storage_type_id,
+            </if>
+            <if test="transactorId != null">
+                transactor_id,
+            </if>
+            <if test="transactorName != null">
+                transactor_name,
+            </if>
+            <if test="customerId != null">
+                customer_id,
+            </if>
+            <if test="customer != null">
+                customer,
+            </if>
+            <if test="contactId != null">
+                contact_id,
+            </if>
+            <if test="contactName != null">
+                contact_name,
+            </if>
+            <if test="contactPhone != null">
+                contact_phone,
+            </if>
+            <if test="salesman != null">
+                salesman,
+            </if>
+            <if test="salesmanPhone != null">
+                salesman_phone,
+            </if>
+            <if test="transportOrderNo != null">
+                transport_order_no,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="warehouseFullname != null">
+                warehouse_fullname,
+            </if>
+            <if test="expectedWarehousingTime != null">
+                expected_warehousing_time,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="reviewTime != null">
+                review_time,
+            </if>
+            <if test="noticeStatus != null">
+                notice_status,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="noticeNo != null">
+                #{noticeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                #{sourceType,jdbcType=TINYINT},
+            </if>
+            <if test="storageTypeId != null">
+                #{storageTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="transactorId != null">
+                #{transactorId,jdbcType=BIGINT},
+            </if>
+            <if test="transactorName != null">
+                #{transactorName,jdbcType=VARCHAR},
+            </if>
+            <if test="customerId != null">
+                #{customerId,jdbcType=BIGINT},
+            </if>
+            <if test="customer != null">
+                #{customer,jdbcType=VARCHAR},
+            </if>
+            <if test="contactId != null">
+                #{contactId,jdbcType=BIGINT},
+            </if>
+            <if test="contactName != null">
+                #{contactName,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPhone != null">
+                #{contactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="salesman != null">
+                #{salesman,jdbcType=VARCHAR},
+            </if>
+            <if test="salesmanPhone != null">
+                #{salesmanPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="transportOrderNo != null">
+                #{transportOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseFullname != null">
+                #{warehouseFullname,jdbcType=VARCHAR},
+            </if>
+            <if test="expectedWarehousingTime != null">
+                #{expectedWarehousingTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewTime != null">
+                #{reviewTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="noticeStatus != null">
+                #{noticeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List" keyProperty="noticeId" useGeneratedKeys="true">
+        insert into wms_warehouse_entry_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            notice_no,
+            order_id,
+            order_no,
+            source_type,
+            storage_type_id,
+            transactor_id,
+            transactor_name,
+            customer_id,
+            customer,
+            contact_id,
+            contact_name,
+            contact_phone,
+            salesman,
+            salesman_phone,
+            transport_order_no,
+            warehouse_id,
+            warehouse_fullname,
+            expected_warehousing_time,
+            memo,
+            review_time,
+            notice_status,
+            status,
+            gmt_create,
+            gmt_modified
+        </trim>
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{item.noticeNo,jdbcType=VARCHAR},
+            #{item.orderId,jdbcType=BIGINT},
+            #{item.orderNo,jdbcType=VARCHAR},
+            #{item.sourceType,jdbcType=TINYINT},
+            #{item.storageTypeId,jdbcType=BIGINT},
+            #{item.transactorId,jdbcType=BIGINT},
+            #{item.transactorName,jdbcType=VARCHAR},
+            #{item.customerId,jdbcType=BIGINT},
+            #{item.customer,jdbcType=VARCHAR},
+            #{item.contactId,jdbcType=BIGINT},
+            #{item.contactName,jdbcType=VARCHAR},
+            #{item.contactPhone,jdbcType=VARCHAR},
+            #{item.salesman,jdbcType=VARCHAR},
+            #{item.salesmanPhone,jdbcType=VARCHAR},
+            #{item.transportOrderNo,jdbcType=VARCHAR},
+            #{item.warehouseId,jdbcType=BIGINT},
+            #{item.warehouseFullname,jdbcType=VARCHAR},
+            #{item.expectedWarehousingTime,jdbcType=TIMESTAMP},
+            #{item.memo,jdbcType=VARCHAR},
+            #{item.reviewTime,jdbcType=TIMESTAMP},
+            #{item.noticeStatus,jdbcType=TINYINT},
+            #{item.status,jdbcType=TINYINT},
+            now(),
+            now()
+        </trim>
+        </foreach>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsWarehouseEntryNoticeQuery" resultType="java.lang.Integer">
+        select count(*) from wms_warehouse_entry_notice
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.WmsWarehouseEntryNoticeDO">
+        update wms_warehouse_entry_notice
+        <set>
+            gmt_modified=now(),
+            <if test="noticeNo != null">
+                notice_no = #{noticeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceType != null">
+                source_type = #{sourceType,jdbcType=TINYINT},
+            </if>
+            <if test="storageTypeId != null">
+                storage_type_id = #{storageTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="transactorId != null">
+                transactor_id = #{transactorId,jdbcType=BIGINT},
+            </if>
+            <if test="transactorName != null">
+                transactor_name = #{transactorName,jdbcType=VARCHAR},
+            </if>
+            <if test="customerId != null">
+                customer_id = #{customerId,jdbcType=BIGINT},
+            </if>
+            <if test="customer != null">
+                customer = #{customer,jdbcType=VARCHAR},
+            </if>
+            <if test="contactId != null">
+                contact_id = #{contactId,jdbcType=BIGINT},
+            </if>
+            <if test="contactName != null">
+                contact_name = #{contactName,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPhone != null">
+                contact_phone = #{contactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="salesman != null">
+                salesman = #{salesman,jdbcType=VARCHAR},
+            </if>
+            <if test="salesmanPhone != null">
+                salesman_phone = #{salesmanPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="transportOrderNo != null">
+                transport_order_no = #{transportOrderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseFullname != null">
+                warehouse_fullname = #{warehouseFullname,jdbcType=VARCHAR},
+            </if>
+            <if test="expectedWarehousingTime != null">
+                expected_warehousing_time = #{expectedWarehousingTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewTime != null">
+                review_time = #{reviewTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="noticeStatus != null">
+                notice_status = #{noticeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where notice_id = #{noticeId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

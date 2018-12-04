@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="center"
+      th:with="pageTitle='车辆信息列表', primaryPage='carManage', secondaryPage='list'">
+<head>
+    <link rel="stylesheet"
+          th:href="${muuBase} + @{/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css}"/>
+    <script th:src="${muuBase} + @{/moment/min/moment.min.js}"></script>
+    <script th:src="${muuBase} + @{/moment/locale/zh-cn.js}"></script>
+    <script th:src="${muuBase} + @{/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js}"></script>
+</head>
+<body>
+<th:block layout:fragment="content">
+</th:block>
+
+<th:block layout:fragment="query">
+    <div th:replace="carManage/carListQuery :: queryArea"></div>
+    <th:block layout:fragment="modal"></th:block>
+</th:block>
+
+
+<th:block layout:fragment="bodyAssets">
+    <script th:src="@{/views/carManage/carList.js(t=${timestamp})}"></script>
+</th:block>
+
+<ul layout:fragment="breadcrumb">
+    <li>车辆信息管理</li>
+</ul>
+</body>
+</html>

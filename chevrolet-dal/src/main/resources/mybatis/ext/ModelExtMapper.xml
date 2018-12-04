@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.ModelExtMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.ModelDO">
+        <id column="model_id" jdbcType="BIGINT" property="modelId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="model_name" jdbcType="VARCHAR" property="modelName" />
+        <result column="series_id" jdbcType="BIGINT" property="seriesId" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="standard" jdbcType="INTEGER" property="standard" />
+        <result column="year" jdbcType="VARCHAR" property="year" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="displacement" jdbcType="VARCHAR" property="displacement" />
+        <result column="drive" jdbcType="VARCHAR" property="drive" />
+        <result column="fuel" jdbcType="VARCHAR" property="fuel" />
+        <result column="seat" jdbcType="VARCHAR" property="seat" />
+        <result column="guide_price" jdbcType="VARCHAR" property="guidePrice" />
+        <result column="wap_name" jdbcType="VARCHAR" property="wapName" />
+        <result column="outer_id" jdbcType="VARCHAR" property="outerId" />
+        <result column="source" jdbcType="INTEGER" property="source" />
+        <result column="rank" jdbcType="INTEGER" property="rank" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        model_id,gmt_create,gmt_modified,model_name,series_id,brand_id,standard,year,status,displacement,drive,fuel,seat,guide_price,wap_name,outer_id,source,rank
+    </sql>
+
+    <sql id="GuidePrice_Column_List">
+        m.model_id,
+        m.gmt_create,
+        m.gmt_modified,
+        m.model_name,
+        m.series_id,
+        m.brand_id,
+        m.standard,
+        m.year,
+        m.status,
+        m.displacement,
+        m.drive,
+        m.fuel,
+        m.seat,
+        m.guide_price,
+        m.wap_name,
+        m.outer_id,
+        m.source,
+        m.rank
+    </sql>
+
+    <select id="getModelStandardList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from b2b_model group by series_id,standard
+    </select>
+
+    <select id="getBrandStandardList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from b2b_model group by brand_id,standard
+    </select>
+
+    <select id="getModelByGuidePrice" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="GuidePrice_Column_List" />
+        FROM b2b_model m LEFT JOIN b2b_brand b
+        ON m.brand_id = b.brand_id
+        WHERE
+        (m.standard = 0 OR m.standard = 1)
+        <if test=" status != null ">
+            AND m.status = #{status}
+        </if>
+        AND (m.guide_price LIKE '${guidePrice}%' OR replace(m.guide_price, '.', '') LIKE '${guidePrice}%')
+        ORDER BY m.guide_price = CONCAT('${guidePrice}', '万') DESC,
+        replace(m.guide_price, '.', '') = CONCAT('${guidePrice}', '万') DESC,
+        b.priority ASC,
+        m.year DESC, m.standard ASC
+        <choose>
+            <when test=" start != null and pageSize != null">
+                LIMIT #{start}, #{pageSize}
+            </when>
+            <otherwise>
+                LIMIT 20
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getModelBySeriesAndChinaStandard" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        from b2b_model
+        where series_id=#{seriesId}
+        and (standard = 0 or standard = 1)
+        <if test=" status != null ">
+            and status = #{status}
+        </if>
+        ORDER BY year DESC, guide_price ASC, model_name DESC
+    </select>
+
+    <select id="getModelBySeriesAndStandard" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        from b2b_model
+        where series_id=#{seriesId}
+        and standard = #{standard}
+        <if test=" status != null ">
+            and status = #{status}
+        </if>
+        ORDER BY year DESC, guide_price ASC, model_name DESC
+    </select>
+
+</mapper>

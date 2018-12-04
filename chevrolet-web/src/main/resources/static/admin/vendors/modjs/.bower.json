@@ -1,0 +1,14 @@
+{
+  "name": "modjs-1.0.13",
+  "homepage": "https://github.com/speedornothing/mod",
+  "version": "1.0.13",
+  "_release": "1.0.13",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.13",
+    "commit": "201150d6b5e64b1f550f6c46770e2d35c198a9c5"
+  },
+  "_source": "https://github.com/speedornothing/mod.git",
+  "_target": "1.0.13",
+  "_originalSource": "modjs"
+}

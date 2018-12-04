@@ -1,0 +1,98 @@
+#debug=true
+
+spring:
+  acura:
+      casDomain: https://login.maihaoche.net
+      appKey: xQHtBUjtNsW899oo
+      appId: 157140122977325056
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/views/
+    suffix: .html
+  profiles:
+    active: dev
+  application:
+        name: chevrolet
+        type: dubbo
+    # Dubbo
+  dubbo:
+    application:
+      name: chevrolet
+      owner: pufang
+      organization: mhc
+      expire: 1800
+    registry:
+      address: zookeeper://172.22.0.7:2181
+    protocol:
+      name: dubbo
+      port: 20883
+      host: 127.0.0.1
+    provider:
+      version: 1.0_y_docker
+      timeout: 5000
+    consumer:
+      version: 1.0_y_docker
+      timeout: 15000
+      retries: 0
+      check: false
+      infiniti:
+        version: 1.0_y_docker
+      acura:
+        version: 1.0_y_docker
+  sleuth:
+      sampler:
+        percentage: 10
+  zipkin:
+    base-url: http://172.22.0.7:9411
+  redis:
+    host: 120.55.119.28
+    password: zhimaguanmen
+    port: 6399
+    timeout: 0
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://rm-bp1mt84z019b0myr26o.mysql.rds.aliyuncs.com:3306/db_b2b
+    username: b2b
+    password: z9o6886tZD
+    validationQuery: select version()
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    initialSize: 5
+    minIdle: 5
+    maxActive: 200
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    testWhileIdle: false
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    filters: stat,wall,log4j
+    maxOpenPreparedStatementPerConnectionSize: 100
+    driverClassName: com.mysql.jdbc.Driver
+ons:
+  topic:
+    cccar: tp_chevrolet_cccar_test
+  pid:
+    cccar: PID_chevrolet_test_cccar
+
+#logging
+logging:
+  appname: chevrolet
+  apppath: /home/admin/app/logs
+  level:
+    root: info
+    mhcframework: info
+    spring: info
+    mhc: info
+    dubbo: info
+  config: classpath:logback-spring.xml

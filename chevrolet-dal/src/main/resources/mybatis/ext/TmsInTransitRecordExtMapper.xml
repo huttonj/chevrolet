@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.ext.TmsInTransitRecordExtMapper">
+
+    <select id="getLatestTmsInTransitRecordDOByTransportCarIdList"
+            resultType="com.chevrolet.dal.dao.domain.TmsInTransitRecordDO">
+        SELECT * FROM tms_in_transit_record t
+        INNER JOIN (SELECT transport_car_id,max(gmt_modified) AS gmt_modified FROM tms_in_transit_record
+        WHERE status = 1 AND transport_car_id IN
+        <foreach collection="list" item="transportCarId" index="index" open="(" close=")" separator=",">
+            #{transportCarId}
+        </foreach>
+        GROUP BY transport_car_id) t2
+        ON t.transport_car_id = t2.transport_car_id AND t.gmt_modified = t2.gmt_modified
+    </select>
+</mapper>

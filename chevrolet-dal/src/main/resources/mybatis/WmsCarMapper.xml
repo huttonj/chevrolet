@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chevrolet.dal.dao.mapper.WmsCarMapper">
+
+    <resultMap id="BaseResultMap" type="com.chevrolet.dal.dao.domain.WmsCarDO">
+        <id column="wms_car_id" jdbcType="BIGINT" property="wmsCarId" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="car_status" jdbcType="TINYINT" property="carStatus" />
+        <result column="order_id" jdbcType="BIGINT" property="orderId" />
+        <result column="notice_id" jdbcType="BIGINT" property="noticeId" />
+        <result column="cc_car_id" jdbcType="BIGINT" property="ccCarId" />
+        <result column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+        <result column="warehouse_fullname" jdbcType="VARCHAR" property="warehouseFullname" />
+        <result column="warehouse_type" jdbcType="TINYINT" property="warehouseType" />
+        <result column="customer_id" jdbcType="BIGINT" property="customerId" />
+        <result column="customer" jdbcType="VARCHAR" property="customer" />
+        <result column="entry_date" jdbcType="TIMESTAMP" property="entryDate" />
+        <result column="delivery_date" jdbcType="TIMESTAMP" property="deliveryDate" />
+        <result column="key_number" jdbcType="INTEGER" property="keyNumber" />
+        <result column="odometer" jdbcType="VARCHAR" property="odometer" />
+        <result column="customs_clearance_status" jdbcType="TINYINT" property="customsClearanceStatus" />
+        <result column="certificate_consistent_status" jdbcType="TINYINT" property="certificateConsistentStatus" />
+        <result column="checklist_status" jdbcType="TINYINT" property="checklistStatus" />
+        <result column="manual_status" jdbcType="TINYINT" property="manualStatus" />
+        <result column="payment_id" jdbcType="BIGINT" property="paymentId" />
+        <result column="process_instance_id" jdbcType="VARCHAR" property="processInstanceId" />
+        <result column="pay_off_status" jdbcType="TINYINT" property="payOffStatus" />
+        <result column="payment_status" jdbcType="TINYINT" property="paymentStatus" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="payment_no" jdbcType="VARCHAR" property="paymentNo" />
+        <result column="store_status" jdbcType="TINYINT" property="storeStatus" />
+        <result column="is_checked" jdbcType="TINYINT" property="isChecked" />
+        <result column="deliverable" jdbcType="TINYINT" property="deliverable" />
+        <result column="check_date" jdbcType="TIMESTAMP" property="checkDate" />
+        <result column="car_storage_operator_id" jdbcType="BIGINT" property="carStorageOperatorId" />
+        <result column="car_storage_operator_name" jdbcType="VARCHAR" property="carStorageOperatorName" />
+        <result column="area_position_id" jdbcType="BIGINT" property="areaPositionId" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        wms_car_id,gmt_create,gmt_modified,car_status,order_id,notice_id,cc_car_id,warehouse_id,warehouse_fullname,warehouse_type,customer_id,customer,entry_date,delivery_date,key_number,odometer,customs_clearance_status,certificate_consistent_status,checklist_status,manual_status,payment_id,process_instance_id,pay_off_status,payment_status,status,payment_no,store_status,is_checked,deliverable,check_date,car_storage_operator_id,car_storage_operator_name,area_position_id
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsCarQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from wms_car
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from wms_car where wms_car_id = #{wmsCarId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from wms_car where wms_car_id = #{wmsCarId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.chevrolet.dal.dao.domain.WmsCarDO">
+        <selectKey keyProperty="wmsCarId" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into wms_car
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="carStatus != null">
+                car_status,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="noticeId != null">
+                notice_id,
+            </if>
+            <if test="ccCarId != null">
+                cc_car_id,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="warehouseFullname != null">
+                warehouse_fullname,
+            </if>
+            <if test="warehouseType != null">
+                warehouse_type,
+            </if>
+            <if test="customerId != null">
+                customer_id,
+            </if>
+            <if test="customer != null">
+                customer,
+            </if>
+            <if test="entryDate != null">
+                entry_date,
+            </if>
+            <if test="deliveryDate != null">
+                delivery_date,
+            </if>
+            <if test="keyNumber != null">
+                key_number,
+            </if>
+            <if test="odometer != null">
+                odometer,
+            </if>
+            <if test="customsClearanceStatus != null">
+                customs_clearance_status,
+            </if>
+            <if test="certificateConsistentStatus != null">
+                certificate_consistent_status,
+            </if>
+            <if test="checklistStatus != null">
+                checklist_status,
+            </if>
+            <if test="manualStatus != null">
+                manual_status,
+            </if>
+            <if test="paymentId != null">
+                payment_id,
+            </if>
+            <if test="processInstanceId != null">
+                process_instance_id,
+            </if>
+            <if test="payOffStatus != null">
+                pay_off_status,
+            </if>
+            <if test="paymentStatus != null">
+                payment_status,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="paymentNo != null">
+                payment_no,
+            </if>
+            <if test="storeStatus != null">
+                store_status,
+            </if>
+            <if test="isChecked != null">
+                is_checked,
+            </if>
+            <if test="deliverable != null">
+                deliverable,
+            </if>
+            <if test="checkDate != null">
+                check_date,
+            </if>
+            <if test="carStorageOperatorId != null">
+                car_storage_operator_id,
+            </if>
+            <if test="carStorageOperatorName != null">
+                car_storage_operator_name,
+            </if>
+            <if test="areaPositionId != null">
+                area_position_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="carStatus != null">
+                #{carStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="noticeId != null">
+                #{noticeId,jdbcType=BIGINT},
+            </if>
+            <if test="ccCarId != null">
+                #{ccCarId,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseFullname != null">
+                #{warehouseFullname,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseType != null">
+                #{warehouseType,jdbcType=TINYINT},
+            </if>
+            <if test="customerId != null">
+                #{customerId,jdbcType=BIGINT},
+            </if>
+            <if test="customer != null">
+                #{customer,jdbcType=VARCHAR},
+            </if>
+            <if test="entryDate != null">
+                #{entryDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deliveryDate != null">
+                #{deliveryDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="keyNumber != null">
+                #{keyNumber,jdbcType=INTEGER},
+            </if>
+            <if test="odometer != null">
+                #{odometer,jdbcType=VARCHAR},
+            </if>
+            <if test="customsClearanceStatus != null">
+                #{customsClearanceStatus,jdbcType=TINYINT},
+            </if>
+            <if test="certificateConsistentStatus != null">
+                #{certificateConsistentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="checklistStatus != null">
+                #{checklistStatus,jdbcType=TINYINT},
+            </if>
+            <if test="manualStatus != null">
+                #{manualStatus,jdbcType=TINYINT},
+            </if>
+            <if test="paymentId != null">
+                #{paymentId,jdbcType=BIGINT},
+            </if>
+            <if test="processInstanceId != null">
+                #{processInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="payOffStatus != null">
+                #{payOffStatus,jdbcType=TINYINT},
+            </if>
+            <if test="paymentStatus != null">
+                #{paymentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="paymentNo != null">
+                #{paymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="storeStatus != null">
+                #{storeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isChecked != null">
+                #{isChecked,jdbcType=TINYINT},
+            </if>
+            <if test="deliverable != null">
+                #{deliverable,jdbcType=TINYINT},
+            </if>
+            <if test="checkDate != null">
+                #{checkDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="carStorageOperatorId != null">
+                #{carStorageOperatorId,jdbcType=BIGINT},
+            </if>
+            <if test="carStorageOperatorName != null">
+                #{carStorageOperatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaPositionId != null">
+                #{areaPositionId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.chevrolet.dal.dao.domain.query.WmsCarQuery" resultType="java.lang.Integer">
+        select count(*) from wms_car
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.chevrolet.dal.dao.domain.WmsCarDO">
+        update wms_car
+        <set>
+            gmt_modified=now(),
+            <if test="carStatus != null">
+                car_status = #{carStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="noticeId != null">
+                notice_id = #{noticeId,jdbcType=BIGINT},
+            </if>
+            <if test="ccCarId != null">
+                cc_car_id = #{ccCarId,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseFullname != null">
+                warehouse_fullname = #{warehouseFullname,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseType != null">
+                warehouse_type = #{warehouseType,jdbcType=TINYINT},
+            </if>
+            <if test="customerId != null">
+                customer_id = #{customerId,jdbcType=BIGINT},
+            </if>
+            <if test="customer != null">
+                customer = #{customer,jdbcType=VARCHAR},
+            </if>
+            <if test="entryDate != null">
+                entry_date = #{entryDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deliveryDate != null">
+                delivery_date = #{deliveryDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="keyNumber != null">
+                key_number = #{keyNumber,jdbcType=INTEGER},
+            </if>
+            <if test="odometer != null">
+                odometer = #{odometer,jdbcType=VARCHAR},
+            </if>
+            <if test="customsClearanceStatus != null">
+                customs_clearance_status = #{customsClearanceStatus,jdbcType=TINYINT},
+            </if>
+            <if test="certificateConsistentStatus != null">
+                certificate_consistent_status = #{certificateConsistentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="checklistStatus != null">
+                checklist_status = #{checklistStatus,jdbcType=TINYINT},
+            </if>
+            <if test="manualStatus != null">
+                manual_status = #{manualStatus,jdbcType=TINYINT},
+            </if>
+            <if test="paymentId != null">
+                payment_id = #{paymentId,jdbcType=BIGINT},
+            </if>
+            <if test="processInstanceId != null">
+                process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="payOffStatus != null">
+                pay_off_status = #{payOffStatus,jdbcType=TINYINT},
+            </if>
+            <if test="paymentStatus != null">
+                payment_status = #{paymentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="paymentNo != null">
+                payment_no = #{paymentNo,jdbcType=VARCHAR},
+            </if>
+            <if test="storeStatus != null">
+                store_status = #{storeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isChecked != null">
+                is_checked = #{isChecked,jdbcType=TINYINT},
+            </if>
+            <if test="deliverable != null">
+                deliverable = #{deliverable,jdbcType=TINYINT},
+            </if>
+            <if test="checkDate != null">
+                check_date = #{checkDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="carStorageOperatorId != null">
+                car_storage_operator_id = #{carStorageOperatorId,jdbcType=BIGINT},
+            </if>
+            <if test="carStorageOperatorName != null">
+                car_storage_operator_name = #{carStorageOperatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaPositionId != null">
+                area_position_id = #{areaPositionId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where wms_car_id = #{wmsCarId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>
